@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LCM Visuals - Neo-Brutalism</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Space Grotesk', sans-serif; }
+        .brutal-card {
+            border: 3px solid #000;
+            box-shadow: 5px 5px 0px 0px #000;
+            transition: all 0.15s ease;
+        }
+        .brutal-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 7px 7px 0px 0px #000;
+        }
+        .brutal-btn {
+            border: 3px solid #000;
+            box-shadow: 4px 4px 0px 0px #000;
+        }
+        .brutal-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px 0px #000;
+        }
+    </style>
+</head>
+<body class="bg-[#FFFDF7] text-black min-h-screen flex flex-col selection:bg-[#FFE600]">
+
+    <!-- Control de Modales Globales -->
+    <script>
+        function abrirModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.style.display = 'flex';
+            }
+        }
+
+        function cerrarModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+
+    <!-- Navbar -->
+    <header class="border-b-4 border-black bg-[#FFE600] sticky top-0 z-40 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="bg-black text-white p-2 font-bold text-xl">LCM</div>
+                <span class="font-bold text-lg tracking-wider">VISUALS</span>
+            </div>
+            <nav class="hidden md:flex gap-8 font-bold text-sm uppercase">
+                <a href="#cursos" class="hover:underline">// Cursos</a>
+                <a href="#lecciones" class="hover:underline">// Mis Cursos</a>
+                <a href="#software" class="hover:underline">// Software</a>
+                <a href="#metodologia" class="hover:underline">// Método</a>
+            </nav>
+            <div class="flex gap-3 items-center">
+                <!-- Botón Panel Admin (Solo para raygnik2000@gmail.com) -->
+                <button type="button" id="btn-panel-admin" style="display: none;" onclick="abrirModal('modal-admin'); prepararCreacionCurso();" class="brutal-btn bg-[#6BCB77] text-black px-4 py-2 text-xs font-bold uppercase flex items-center gap-1">
+                    <i class="ph-bold ph-gear"></i> Panel Admin
+                </button>
+                
+                <button type="button" onclick="abrirModal('modal-info')" class="brutal-btn bg-[#4D96FF] text-white px-4 py-2 text-xs font-bold uppercase">Más Información</button>
+                
+                <!-- Botones para Invitados -->
+                <div id="auth-guest-buttons" class="flex gap-3">
+                    <button type="button" onclick="abrirModal('modal-login')" class="brutal-btn bg-white px-4 py-2 text-xs font-bold uppercase">Entrar</button>
+                    <button type="button" onclick="abrirModal('modal-register')" class="brutal-btn bg-[#FF6B6B] text-white px-4 py-2 text-xs font-bold uppercase">Registro</button>
+                </div>
+
+                <!-- Botón para Usuario Autenticado -->
+                <div id="auth-user-buttons" style="display: none;" class="flex items-center gap-3">
+                    <span id="user-display-name" class="text-xs font-bold uppercase bg-black text-white px-3 py-2 border-2 border-black"></span>
+                    <button type="button" onclick="cerrarSesion()" class="brutal-btn bg-[#FF6B6B] text-white px-4 py-2 text-xs font-bold uppercase flex items-center gap-1">
+                        <i class="ph-bold ph-sign-out"></i> Cerrar Sesión
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="py-20 px-6 text-center max-w-4xl mx-auto">
+        <span class="bg-[#4D96FF] text-white font-bold text-xs uppercase px-3 py-1 border-2 border-black inline-block mb-6 shadow-[3px_3px_0px_0px_#000]">Masterclass 2026</span>
+        <h1 class="text-4xl md:text-6xl font-bold uppercase leading-tight mb-6">
+            Domina el software de <span class="bg-[#FFE600] px-2 border-2 border-black">diseño gráfico</span>
+        </h1>
+        <p class="text-base md:text-lg font-medium mb-8 max-w-2xl mx-auto">
+            Aprende Photoshop, Illustrator, Figma y Premiere Pro mediante proyectos reales.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <a href="#cursos" class="brutal-btn bg-[#6BCB77] text-black font-bold text-base px-8 py-4 inline-block uppercase">Ver Catálogo de Cursos</a>
+            <button type="button" onclick="abrirModal('modal-info')" class="brutal-btn bg-[#4D96FF] text-white font-bold text-base px-8 py-4 inline-block uppercase">Quiero más información _</button>
+        </div>
+    </section>
+
+    <!-- Cursos Destacados (Catálogo general) -->
+    <section id="cursos" class="py-16 px-6 max-w-7xl mx-auto w-full border-t-4 border-black">
+        <h2 class="text-3xl font-bold uppercase mb-8">Programas Destacados</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="brutal-card bg-[#FFD93D] p-6">
+                <div class="text-3xl font-bold mb-2">Ps</div>
+                <h3 class="text-xl font-bold mb-2">Adobe Photoshop</h3>
+                <p class="text-xs font-medium mb-4">Retoque digital, fotomontaje y tratamiento de color profesional.</p>
+                <span class="bg-black text-white text-[10px] px-2 py-1 uppercase font-bold">24 Horas</span>
+            </div>
+            <div class="brutal-card bg-[#FF6B6B] text-white p-6">
+                <div class="text-3xl font-bold mb-2">Ai</div>
+                <h3 class="text-xl font-bold mb-2">Adobe Illustrator</h3>
+                <p class="text-xs font-medium mb-4 text-slate-100">Ilustración vectorial, desarrollo de marcas e iconografía.</p>
+                <span class="bg-white text-black text-[10px] px-2 py-1 uppercase font-bold">20 Horas</span>
+            </div>
+            <div class="brutal-card bg-[#4D96FF] text-white p-6">
+                <div class="text-3xl font-bold mb-2">Fg</div>
+                <h3 class="text-xl font-bold mb-2">Figma UI/UX</h3>
+                <p class="text-xs font-medium mb-4 text-slate-100">Diseño de interfaces web/app y prototipado interactivo.</p>
+                <span class="bg-white text-black text-[10px] px-2 py-1 uppercase font-bold">30 Horas</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Mis Cursos (Aula Virtual con Barra de Progreso e Inscripción) -->
+    <section id="lecciones" class="py-16 px-6 max-w-7xl mx-auto w-full border-t-4 border-black">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+            <div>
+                <span class="bg-[#FF6B6B] text-white font-bold text-xs uppercase px-3 py-1 border-2 border-black inline-block mb-2 shadow-[2px_2px_0px_0px_#000]">Área de Alumno</span>
+                <h2 class="text-3xl font-bold uppercase">Mis Cursos y Progreso</h2>
+            </div>
+            <!-- Botón Crear Curso (Solo para el admin) -->
+            <button type="button" id="btn-crear-curso" style="display: none;" onclick="abrirModal('modal-admin'); prepararCreacionCurso();" class="brutal-btn bg-[#FFD93D] px-4 py-2 text-xs font-bold uppercase flex items-center gap-1">
+                <i class="ph-bold ph-plus-circle text-base"></i> Crear Nuevo Curso
+            </button>
+        </div>
+
+        <div id="cursos-container" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Renderizado dinámico vía JavaScript según los cursos inscritos -->
+        </div>
+    </section>
+
+    <!-- Software -->
+    <section id="software" class="py-16 px-6 bg-[#FFE600] border-t-4 border-black">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-3xl font-bold uppercase mb-8">Ecosistema de Software</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+                <div class="brutal-card bg-white p-4 font-bold text-center">Photoshop</div>
+                <div class="brutal-card bg-white p-4 font-bold text-center">Illustrator</div>
+                <div class="brutal-card bg-white p-4 font-bold text-center">Figma</div>
+                <div class="brutal-card bg-white p-4 font-bold text-center">Premiere</div>
+                <div class="brutal-card bg-white p-4 font-bold text-center">After Effects</div>
+                <div class="brutal-card bg-white p-4 font-bold text-center">Canva Pro</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Metodología -->
+    <section id="metodologia" class="py-16 px-6 max-w-7xl mx-auto w-full border-t-4 border-black">
+        <h2 class="text-3xl font-bold uppercase mb-8 text-center">Metodología de Estudio</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="brutal-card bg-white p-6">
+                <h3 class="font-bold text-lg mb-2">1. Proyectos Reales</h3>
+                <p class="text-xs">Ejercicios prácticos con entregables de nivel profesional.</p>
+            </div>
+            <div class="brutal-card bg-white p-6">
+                <h3 class="font-bold text-lg mb-2">2. Tablero Kanban</h3>
+                <p class="text-xs">Seguimiento de tareas y revisiones en nuestro sistema LMS.</p>
+            </div>
+            <div class="brutal-card bg-white p-6">
+                <h3 class="font-bold text-lg mb-2">3. Certificado</h3>
+                <p class="text-xs">Acredita tus habilidades técnicas al finalizar cada módulo.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL PANEL ADMIN (CREAR / EDITAR / INSCRIBIR USUARIOS) -->
+    <div id="modal-admin" style="display: none;" class="fixed inset-0 bg-black/70 z-50 items-center justify-center p-4 overflow-y-auto">
+        <div class="brutal-card bg-[#FFFDF7] p-6 w-full max-w-2xl my-8 text-black relative">
+            <div class="flex justify-between items-center mb-6 pb-3 border-b-4 border-black">
+                <h3 id="admin-modal-title" class="font-bold text-xl uppercase tracking-wider flex items-center gap-2">
+                    <span class="bg-black text-[#FFE600] px-2 py-0.5">//</span>
+                    CREAR NUEVO CURSO
+                </h3>
+                <button type="button" onclick="cerrarModal('modal-admin')" class="brutal-btn bg-white px-2 py-1 font-bold text-sm hover:bg-[#FF6B6B] hover:text-white transition">
+                    ✕
+                </button>
+            </div>
+
+            <form id="form-curso" onsubmit="guardarCurso(event)" class="space-y-4">
+                <input type="hidden" id="curso-id">
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase mb-1">Título del Curso *</label>
+                        <input type="text" id="curso-titulo" required placeholder="EJ: ADOBE PHOTOSHOP" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase mb-1">Sigla / Badge *</label>
+                        <input type="text" id="curso-badge" required placeholder="EJ: PS, AI, FG" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase mb-1">Color del Badge *</label>
+                        <select id="curso-color" required class="w-full border-2 border-black p-2.5 text-sm font-bold bg-white focus:outline-none">
+                            <option value="#FFD93D">Amarillo (#FFD93D)</option>
+                            <option value="#FF6B6B">Rojo (#FF6B6B)</option>
+                            <option value="#4D96FF">Azul (#4D96FF)</option>
+                            <option value="#6BCB77">Verde (#6BCB77)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase mb-1">Duración Estimada *</label>
+                        <input type="text" id="curso-duracion" required placeholder="EJ: 24 Horas" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white focus:outline-none">
+                    </div>
+                </div>
+
+                <!-- CAMPO DE INSCRIPCIÓN DE ALUMNOS -->
+                <div>
+                    <label class="block text-xs font-bold uppercase mb-1">Correos de Alumnos Inscritos (separados por coma) *</label>
+                    <input type="text" id="curso-inscritos" placeholder="ej: alumno1@correo.com, alumno2@correo.com" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white focus:outline-none">
+                    <span class="text-[10px] text-slate-600 block mt-1">Solo los usuarios con estos correos podrán visualizar el curso en "Mis Cursos".</span>
+                </div>
+
+                <div class="border-t-2 border-black pt-4 mt-4">
+                    <div class="flex justify-between items-center mb-3">
+                        <label class="text-xs font-bold uppercase">Lecciones y Recursos</label>
+                        <button type="button" onclick="agregarCampoLeccion()" class="brutal-btn bg-[#FFE600] px-3 py-1 text-[11px] font-bold uppercase">
+                            + Agregar Lección
+                        </button>
+                    </div>
+
+                    <div id="lecciones-wrapper" class="space-y-3 max-h-60 overflow-y-auto p-2 border-2 border-black bg-white">
+                        <!-- Campos inyectados con JS -->
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-4 border-t-2 border-black mt-6">
+                    <button type="button" onclick="cerrarModal('modal-admin')" class="brutal-btn bg-white font-bold text-xs uppercase px-4 py-2.5">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="brutal-btn bg-[#6BCB77] text-black font-bold text-xs uppercase px-6 py-2.5">
+                        Guardar Curso _
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL INFO -->
+    <div id="modal-info" style="display: none;" class="fixed inset-0 bg-black/60 z-50 items-center justify-center p-4">
+        <div class="brutal-card bg-[#FFE600] p-6 w-full max-w-lg text-black relative">
+            <div class="flex justify-between items-center mb-6 pb-3 border-b-4 border-black">
+                <h3 class="font-bold text-xl uppercase tracking-wider flex items-center gap-2">
+                    <span class="bg-black text-[#FFE600] px-2 py-0.5">//</span>
+                    MÁS INFORMACIÓN
+                </h3>
+                <button type="button" onclick="cerrarModal('modal-info')" class="brutal-btn bg-white px-2 py-1 font-bold text-sm hover:bg-[#FF6B6B] hover:text-white transition">
+                    ✕
+                </button>
+            </div>
+            <form onsubmit="event.preventDefault(); alert('Solicitud enviada con éxito'); cerrarModal('modal-info');" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase mb-1">Nombre Completo *</label>
+                    <input type="text" required placeholder="EJ: CARLOS MENDOZA" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white focus:outline-none">
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold uppercase mb-1">Correo Electrónico *</label>
+                        <input type="email" required placeholder="USUARIO@CORREO.COM" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase mb-1">Teléfono / WhatsApp *</label>
+                        <input type="tel" required placeholder="+57 300 000 0000" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white focus:outline-none">
+                    </div>
+                </div>
+                <div class="flex justify-end gap-3 pt-3 border-t-2 border-black">
+                    <button type="button" onclick="cerrarModal('modal-info')" class="brutal-btn bg-white text-black font-bold text-xs uppercase px-4 py-2.5">Cancelar</button>
+                    <button type="submit" class="brutal-btn bg-[#6BCB77] text-black font-bold text-xs uppercase px-6 py-2.5">Enviar _</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL LOGIN -->
+    <div id="modal-login" style="display: none;" class="fixed inset-0 bg-black/60 z-50 items-center justify-center p-4">
+        <div class="brutal-card bg-white p-6 w-full max-w-md">
+            <div class="flex justify-between items-center mb-4 pb-2 border-b-2 border-black">
+                <h3 class="font-bold text-lg uppercase">Iniciar Sesión</h3>
+                <button type="button" onclick="cerrarModal('modal-login')" class="font-bold text-lg">✕</button>
+            </div>
+            <form onsubmit="procesarLogin(event)">
+                <input type="email" id="login-email" required placeholder="Correo" class="border-2 border-black p-2 w-full mb-3 text-sm font-medium focus:outline-none bg-white">
+                <input type="password" id="login-password" required placeholder="Contraseña" class="border-2 border-black p-2 w-full mb-4 text-sm font-medium focus:outline-none bg-white">
+                <button type="submit" class="brutal-btn bg-[#6BCB77] text-black w-full py-2.5 font-bold uppercase text-xs">Entrar _</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL REGISTRO -->
+    <div id="modal-register" style="display: none;" class="fixed inset-0 bg-black/60 z-50 items-center justify-center p-4">
+        <div class="brutal-card bg-white p-6 w-full max-w-md">
+            <div class="flex justify-between items-center mb-4 pb-2 border-b-2 border-black">
+                <h3 class="font-bold text-lg uppercase">Crear Cuenta</h3>
+                <button type="button" onclick="cerrarModal('modal-register')" class="font-bold text-lg">✕</button>
+            </div>
+            <form onsubmit="procesarRegistro(event)">
+                <input type="text" id="reg-name" required placeholder="Nombre completo" class="border-2 border-black p-2 w-full mb-3 text-sm font-medium focus:outline-none bg-white">
+                <input type="email" id="reg-email" required placeholder="Correo" class="border-2 border-black p-2 w-full mb-3 text-sm font-medium focus:outline-none bg-white">
+                <input type="password" id="reg-password" required placeholder="Contraseña" class="border-2 border-black p-2 w-full mb-4 text-sm font-medium focus:outline-none bg-white">
+                <button type="submit" class="brutal-btn bg-[#FF6B6B] text-white w-full py-2.5 font-bold uppercase text-xs">Registrarse _</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- LÓGICA JAVASCRIPT CON FILTRADO DE INSCRIPCIONES -->
+    <script>
+        const ADMIN_EMAIL = "raygnik2000@gmail.com";
+
+        // --- AUTENTICACIÓN ---
+        let usuarioActual = null;
+        try {
+            usuarioActual = JSON.parse(localStorage.getItem('lcm_user')) || null;
+        } catch (e) {
+            usuarioActual = null;
+        }
+
+        function esAdministrador() {
+            return usuarioActual && usuarioActual.email && usuarioActual.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+        }
+
+        function actualizarUIAutenticacion() {
+            const guestButtons = document.getElementById('auth-guest-buttons');
+            const userButtons = document.getElementById('auth-user-buttons');
+            const userDisplayName = document.getElementById('user-display-name');
+            const btnPanelAdmin = document.getElementById('btn-panel-admin');
+            const btnCrearCurso = document.getElementById('btn-crear-curso');
+
+            if (!guestButtons || !userButtons || !userDisplayName) return;
+
+            if (usuarioActual) {
+                guestButtons.style.display = 'none';
+                userButtons.style.display = 'flex';
+                userDisplayName.innerText = usuarioActual.nombre || 'USUARIO';
+            } else {
+                guestButtons.style.display = 'flex';
+                userButtons.style.display = 'none';
+                userDisplayName.innerText = '';
+            }
+
+            const isAdmin = esAdministrador();
+            if (btnPanelAdmin) btnPanelAdmin.style.display = isAdmin ? 'flex' : 'none';
+            if (btnCrearCurso) btnCrearCurso.style.display = isAdmin ? 'flex' : 'none';
+
+            renderizarCursos();
+        }
+
+        function procesarLogin(e) {
+            e.preventDefault();
+            const emailInput = document.getElementById('login-email');
+            const email = emailInput ? emailInput.value.trim() : '';
+            const nombre = email.split('@')[0] || 'USUARIO';
+            
+            usuarioActual = { nombre: nombre.toUpperCase(), email: email };
+            localStorage.setItem('lcm_user', JSON.stringify(usuarioActual));
+            actualizarUIAutenticacion();
+            cerrarModal('modal-login');
+            alert('¡Bienvenido, ' + usuarioActual.nombre + '!');
+        }
+
+        function procesarRegistro(e) {
+            e.preventDefault();
+            const nameInput = document.getElementById('reg-name');
+            const emailInput = document.getElementById('reg-email');
+            const nombre = nameInput ? nameInput.value.trim() : 'NUEVO USUARIO';
+            const email = emailInput ? emailInput.value.trim() : '';
+            
+            usuarioActual = { nombre: nombre.toUpperCase(), email: email };
+            localStorage.setItem('lcm_user', JSON.stringify(usuarioActual));
+            actualizarUIAutenticacion();
+            cerrarModal('modal-register');
+            alert('¡Cuenta creada con éxito, ' + usuarioActual.nombre + '!');
+        }
+
+        function cerrarSesion() {
+            usuarioActual = null;
+            localStorage.removeItem('lcm_user');
+            actualizarUIAutenticacion();
+        }
+
+        // --- CURSOS Y PROGRESO ---
+        let cursos = [];
+        try {
+            cursos = JSON.parse(localStorage.getItem('lcm_cursos'));
+        } catch (e) {
+            cursos = null;
+        }
+
+        if (!cursos || !Array.isArray(cursos) || cursos.length === 0) {
+            cursos = [
+                {
+                    id: "1",
+                    titulo: "Adobe Photoshop",
+                    badge: "PS",
+                    color: "#FFD93D",
+                    duracion: "24 Horas",
+                    inscritos: [ADMIN_EMAIL, "raygnik2000@gmail.com"],
+                    lecciones: [
+                        { titulo: "Interfaz y Espacio de Trabajo", video: "https://youtube.com", material: "#" },
+                        { titulo: "Capas y Máscaras", video: "https://youtube.com", material: "#" }
+                    ]
+                },
+                {
+                    id: "2",
+                    titulo: "Adobe Illustrator",
+                    badge: "AI",
+                    color: "#FF6B6B",
+                    duracion: "20 Horas",
+                    inscritos: [ADMIN_EMAIL],
+                    lecciones: [
+                        { titulo: "Pluma y Trazos Vectoriales", video: "https://youtube.com", material: "#" }
+                    ]
+                },
+                {
+                    id: "3",
+                    titulo: "Figma UI/UX",
+                    badge: "FG",
+                    color: "#4D96FF",
+                    duracion: "30 Horas",
+                    inscritos: [ADMIN_EMAIL],
+                    lecciones: [
+                        { titulo: "Auto Layout y Componentes", video: "https://youtube.com", material: "#" }
+                    ]
+                }
+            ];
+            localStorage.setItem('lcm_cursos', JSON.stringify(cursos));
+        }
+
+        let progreso = {};
+        try {
+            progreso = JSON.parse(localStorage.getItem('lcm_progreso')) || {};
+        } catch (e) {
+            progreso = {};
+        }
+
+        function guardarEnStorage() {
+            localStorage.setItem('lcm_cursos', JSON.stringify(cursos));
+            renderizarCursos();
+        }
+
+        function toggleLeccion(cursoId, indexLeccion) {
+            if (!progreso[cursoId]) {
+                progreso[cursoId] = [];
+            }
+
+            const pos = progreso[cursoId].indexOf(indexLeccion);
+            if (pos > -1) {
+                progreso[cursoId].splice(pos, 1);
+            } else {
+                progreso[cursoId].push(indexLeccion);
+            }
+
+            localStorage.setItem('lcm_progreso', JSON.stringify(progreso));
+            renderizarCursos();
+        }
+
+        function renderizarCursos() {
+            const container = document.getElementById('cursos-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            // Si no hay sesión iniciada
+            if (!usuarioActual) {
+                container.innerHTML = `
+                    <div class="col-span-3 brutal-card bg-white p-8 text-center">
+                        <h3 class="font-bold text-lg uppercase mb-2">Inicia sesión para ver tus cursos</h3>
+                        <p class="text-xs text-slate-600 mb-4">Debes ingresar con tu cuenta para acceder a las lecciones asignadas por el administrador.</p>
+                        <button type="button" onclick="abrirModal('modal-login')" class="brutal-btn bg-[#6BCB77] text-black px-4 py-2 text-xs font-bold uppercase">Iniciar Sesión</button>
+                    </div>
+                `;
+                return;
+            }
+
+            const isAdmin = esAdministrador();
+            let cursosVisibles = cursos;
+
+            // Si no es admin, filtramos solo los cursos donde su correo esté en 'inscritos'
+            if (!isAdmin) {
+                cursosVisibles = cursos.filter(c => {
+                    const inscritos = c.inscritos || [];
+                    return inscritos.map(e => e.toLowerCase().trim()).includes(usuarioActual.email.toLowerCase().trim());
+                });
+            }
+
+            if (cursosVisibles.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-3 brutal-card bg-white p-8 text-center">
+                        <h3 class="font-bold text-lg uppercase mb-2">No tienes cursos asignados</h3>
+                        <p class="text-xs text-slate-600">El administrador aún no te ha inscrito en ningún programa de estudio.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            cursosVisibles.forEach(curso => {
+                const totalLecciones = (curso.lecciones && Array.isArray(curso.lecciones)) ? curso.lecciones.length : 0;
+                const completadasArr = progreso[curso.id] || [];
+                const leccionesCompletadas = completadasArr.length;
+                
+                const porcentaje = totalLecciones > 0 ? Math.round((leccionesCompletadas / totalLecciones) * 100) : 0;
+
+                const card = document.createElement('div');
+                card.className = "brutal-card bg-white p-6 flex flex-col justify-between";
+
+                let leccionesHTML = '';
+                if (totalLecciones > 0) {
+                    curso.lecciones.forEach((l, idx) => {
+                        const estaCompletada = completadasArr.includes(idx);
+                        leccionesHTML += `
+                            <li class="border-2 border-black p-3 bg-[#FFFDF7] shadow-[2px_2px_0px_0px_#000] flex flex-col gap-2">
+                                <div class="flex items-center justify-between">
+                                    <label class="flex items-center gap-2 cursor-pointer text-sm font-bold">
+                                        <input type="checkbox" ${estaCompletada ? 'checked' : ''} onchange="toggleLeccion('${curso.id}', ${idx})" class="w-4 h-4 accent-black border-2 border-black cursor-pointer">
+                                        <span class="${estaCompletada ? 'line-through text-slate-500' : ''}">${idx + 1}. ${l.titulo || 'Lección sin título'}</span>
+                                    </label>
+                                </div>
+                                <div class="flex flex-wrap gap-2">
+                                    ${l.video ? `<a href="${l.video}" target="_blank" class="brutal-btn bg-[#FF6B6B] text-white px-2.5 py-1 text-[10px] font-bold uppercase flex items-center gap-1"><i class="ph-bold ph-play-circle"></i> Ver Video</a>` : ''}
+                                    ${l.material ? `<a href="${l.material}" target="_blank" class="brutal-btn bg-[#6BCB77] text-black px-2.5 py-1 text-[10px] font-bold uppercase flex items-center gap-1"><i class="ph-bold ph-download"></i> Material</a>` : ''}
+                                </div>
+                            </li>
+                        `;
+                    });
+                }
+
+                let adminCardButtons = '';
+                if (isAdmin) {
+                    adminCardButtons = `
+                        <div class="flex gap-1">
+                            <button type="button" onclick="editarCurso('${curso.id}')" title="Editar" class="brutal-btn bg-[#FFE600] px-2 py-1 text-xs font-bold">✏️</button>
+                            <button type="button" onclick="eliminarCurso('${curso.id}')" title="Eliminar" class="brutal-btn bg-[#FF6B6B] text-white px-2 py-1 text-xs font-bold">🗑️</button>
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-center mb-3 pb-2 border-b-2 border-black">
+                            <span class="font-bold text-sm px-2 py-0.5 border border-black" style="background-color: ${curso.color || '#FFD93D'}">${curso.badge || 'CRS'} - ${curso.titulo || 'Curso'}</span>
+                            ${adminCardButtons}
+                        </div>
+
+                        <!-- BARRA DE PROGRESO -->
+                        <div class="mb-4 bg-white border-2 border-black p-2 shadow-[2px_2px_0px_0px_#000]">
+                            <div class="flex justify-between text-xs font-bold uppercase mb-1">
+                                <span>Progreso</span>
+                                <span>${porcentaje}% (${leccionesCompletadas}/${totalLecciones})</span>
+                            </div>
+                            <div class="w-full bg-slate-200 border-2 border-black h-3 overflow-hidden">
+                                <div class="bg-[#6BCB77] h-full transition-all duration-300" style="width: ${porcentaje}%"></div>
+                            </div>
+                        </div>
+
+                        <ul class="space-y-3 mb-6">
+                            ${leccionesHTML || '<li class="text-xs font-bold text-slate-500">Sin lecciones registradas</li>'}
+                        </ul>
+                    </div>
+                    <div class="text-xs font-bold bg-black text-white p-2 text-center uppercase">
+                        ${curso.duracion || '0 Horas'} • ${totalLecciones} Lección(es)
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function prepararCreacionCurso() {
+            if (!esAdministrador()) {
+                alert("Acceso denegado.");
+                return;
+            }
+            const formCurso = document.getElementById('form-curso');
+            const cursoId = document.getElementById('curso-id');
+            const modalTitle = document.getElementById('admin-modal-title');
+            const inscritosField = document.getElementById('curso-inscritos');
+            const wrapper = document.getElementById('lecciones-wrapper');
+
+            if (formCurso) formCurso.reset();
+            if (cursoId) cursoId.value = '';
+            if (modalTitle) modalTitle.innerText = '// CREAR NUEVO CURSO';
+            if (inscritosField) inscritosField.value = ADMIN_EMAIL; // Por defecto el admin
+            if (wrapper) wrapper.innerHTML = '';
+            
+            agregarCampoLeccion();
+        }
+
+        function agregarCampoLeccion(titulo = '', video = '', material = '') {
+            const wrapper = document.getElementById('lecciones-wrapper');
+            if (!wrapper) return;
+            const index = wrapper.children.length;
+
+            const div = document.createElement('div');
+            div.className = "border-2 border-black p-3 bg-[#FFFDF7] space-y-2 relative brutal-card";
+            div.innerHTML = `
+                <div class="flex justify-between items-center">
+                    <span class="text-xs font-bold uppercase">Lección #${index + 1}</span>
+                    <button type="button" onclick="this.parentElement.parentElement.remove()" class="text-xs font-bold text-red-600 hover:underline">Eliminar</button>
+                </div>
+                <input type="text" class="lec-titulo w-full border-2 border-black p-1.5 text-xs font-bold" placeholder="Título de la lección" value="${titulo}" required>
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="url" class="lec-video w-full border-2 border-black p-1.5 text-xs" placeholder="URL Video (YouTube)" value="${video}">
+                    <input type="url" class="lec-material w-full border-2 border-black p-1.5 text-xs" placeholder="URL Material (Drive/Zip)" value="${material}">
+                </div>
+            `;
+            wrapper.appendChild(div);
+        }
+
+        function editarCurso(id) {
+            if (!esAdministrador()) {
+                alert("Acceso denegado.");
+                return;
+            }
+            const curso = cursos.find(c => c.id === id);
+            if (!curso) return;
+
+            const cursoId = document.getElementById('curso-id');
+            const cursoTitulo = document.getElementById('curso-titulo');
+            const cursoBadge = document.getElementById('curso-badge');
+            const cursoColor = document.getElementById('curso-color');
+            const cursoDuracion = document.getElementById('curso-duracion');
+            const cursoInscritos = document.getElementById('curso-inscritos');
+            const modalTitle = document.getElementById('admin-modal-title');
+            const wrapper = document.getElementById('lecciones-wrapper');
+
+            if (cursoId) cursoId.value = curso.id;
+            if (cursoTitulo) cursoTitulo.value = curso.titulo;
+            if (cursoBadge) cursoBadge.value = curso.badge;
+            if (cursoColor) cursoColor.value = curso.color;
+            if (cursoDuracion) cursoDuracion.value = curso.duracion;
+            if (cursoInscritos) cursoInscritos.value = (curso.inscritos || []).join(', ');
+            if (modalTitle) modalTitle.innerText = '// EDITAR CURSO';
+            
+            if (wrapper) {
+                wrapper.innerHTML = '';
+                if (curso.lecciones && curso.lecciones.length > 0) {
+                    curso.lecciones.forEach(l => {
+                        agregarCampoLeccion(l.titulo, l.video, l.material);
+                    });
+                } else {
+                    agregarCampoLeccion();
+                }
+            }
+
+            abrirModal('modal-admin');
+        }
+
+        function guardarCurso(e) {
+            e.preventDefault();
+            if (!esAdministrador()) {
+                alert("Acceso denegado. No tienes permisos para guardar cursos.");
+                cerrarModal('modal-admin');
+                return;
+            }
+
+            const idField = document.getElementById('curso-id');
+            const tituloField = document.getElementById('curso-titulo');
+            const badgeField = document.getElementById('curso-badge');
+            const colorField = document.getElementById('curso-color');
+            const duracionField = document.getElementById('curso-duracion');
+            const inscritosField = document.getElementById('curso-inscritos');
+
+            const id = idField && idField.value ? idField.value : Date.now().toString();
+            const titulo = tituloField ? tituloField.value : '';
+            const badge = badgeField ? badgeField.value : '';
+            const color = colorField ? colorField.value : '#FFD93D';
+            const duracion = duracionField ? duracionField.value : '';
+            
+            // Procesar correos inscritos separados por coma
+            const inscritosText = inscritosField ? inscritosField.value : '';
+            const inscritos = inscritosText ? inscritosText.split(',').map(e => e.trim()).filter(e => e !== '') : [];
+
+            const lecciones = [];
+            document.querySelectorAll('#lecciones-wrapper > div').forEach(div => {
+                const lecTitulo = div.querySelector('.lec-titulo')?.value || '';
+                const lecVideo = div.querySelector('.lec-video')?.value || '';
+                const lecMaterial = div.querySelector('.lec-material')?.value || '';
+
+                if (lecTitulo.trim() !== '') {
+                    lecciones.push({ titulo: lecTitulo, video: lecVideo, material: lecMaterial });
+                }
+            });
+
+            const index = cursos.findIndex(c => c.id === id);
+            const nuevoCurso = { id, titulo, badge, color, duracion, inscritos, lecciones };
+
+            if (index >= 0) {
+                cursos[index] = nuevoCurso;
+            } else {
+                cursos.push(nuevoCurso);
+            }
+
+            guardarEnStorage();
+            cerrarModal('modal-admin');
+        }
+
+        function eliminarCurso(id) {
+            if (!esAdministrador()) {
+                alert("Acceso denegado.");
+                return;
+            }
+            if (confirm("¿Estás seguro de que deseas eliminar este curso?")) {
+                cursos = cursos.filter(c => c.id !== id);
+                delete progreso[id];
+                localStorage.setItem('lcm_progreso', JSON.stringify(progreso));
+                guardarEnStorage();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderizarCursos();
+            actualizarUIAutenticacion();
+        });
+    </script>
+</body>
+</html>
