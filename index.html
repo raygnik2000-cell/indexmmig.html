@@ -3,10 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LCM Visuals - Neo-Brutalism</title>
+    <title>LCM Visuals - Neo-Brutalism & CRM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- EmailJS SDK con tus credenciales -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+       (function(){
+          emailjs.init({
+            publicKey: "tNZBGBdYegY1mJqA3",
+          });
+       })();
+    </script>
+
     <style>
         body { font-family: 'Space Grotesk', sans-serif; }
         .brutal-card {
@@ -30,23 +41,6 @@
 </head>
 <body class="bg-[#FFFDF7] text-black min-h-screen flex flex-col selection:bg-[#FFE600]">
 
-    <!-- Control de Modales Globales -->
-    <script>
-        function abrirModal(id) {
-            const modal = document.getElementById(id);
-            if (modal) {
-                modal.style.display = 'flex';
-            }
-        }
-
-        function cerrarModal(id) {
-            const modal = document.getElementById(id);
-            if (modal) {
-                modal.style.display = 'none';
-            }
-        }
-    </script>
-
     <!-- Navbar -->
     <header class="border-b-4 border-black bg-[#FFE600] sticky top-0 z-40 px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
@@ -55,26 +49,24 @@
                 <span class="font-bold text-lg tracking-wider">VISUALS</span>
             </div>
             <nav class="hidden md:flex gap-8 font-bold text-sm uppercase">
+                <a href="#crm-seccion" class="hover:underline text-blue-900 font-black">// CRM Leads</a>
                 <a href="#cursos" class="hover:underline">// Cursos</a>
                 <a href="#lecciones" class="hover:underline">// Mis Cursos</a>
                 <a href="#software" class="hover:underline">// Software</a>
                 <a href="#metodologia" class="hover:underline">// Método</a>
             </nav>
             <div class="flex gap-3 items-center">
-                <!-- Botón Panel Admin (Solo para raygnik2000@gmail.com) -->
                 <button type="button" id="btn-panel-admin" style="display: none;" onclick="abrirModal('modal-admin'); prepararCreacionCurso();" class="brutal-btn bg-[#6BCB77] text-black px-4 py-2 text-xs font-bold uppercase flex items-center gap-1">
                     <i class="ph-bold ph-gear"></i> Panel Admin
                 </button>
                 
                 <button type="button" onclick="abrirModal('modal-info')" class="brutal-btn bg-[#4D96FF] text-white px-4 py-2 text-xs font-bold uppercase">Más Información</button>
                 
-                <!-- Botones para Invitados -->
                 <div id="auth-guest-buttons" class="flex gap-3">
                     <button type="button" onclick="abrirModal('modal-login')" class="brutal-btn bg-white px-4 py-2 text-xs font-bold uppercase">Entrar</button>
                     <button type="button" onclick="abrirModal('modal-register')" class="brutal-btn bg-[#FF6B6B] text-white px-4 py-2 text-xs font-bold uppercase">Registro</button>
                 </div>
 
-                <!-- Botón para Usuario Autenticado -->
                 <div id="auth-user-buttons" style="display: none;" class="flex items-center gap-3">
                     <span id="user-display-name" class="text-xs font-bold uppercase bg-black text-white px-3 py-2 border-2 border-black"></span>
                     <button type="button" onclick="cerrarSesion()" class="brutal-btn bg-[#FF6B6B] text-white px-4 py-2 text-xs font-bold uppercase flex items-center gap-1">
@@ -100,65 +92,149 @@
         </div>
     </section>
 
-    <!-- Cursos Destacados (Catálogo general) -->
+    <!-- 1. MÓDULO CRM DE LEADS -->
+    <section id="crm-seccion" class="py-16 px-6 max-w-7xl mx-auto w-full border-t-4 border-black bg-white">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+            <div>
+                <span class="bg-[#4D96FF] text-white font-bold text-xs uppercase px-3 py-1 border-2 border-black inline-block mb-2 shadow-[2px_2px_0px_0px_#000]">Módulo CRM</span>
+                <h2 class="text-3xl font-bold uppercase">Gestión de Contactos y Leads</h2>
+            </div>
+            <button type="button" onclick="abrirModal('modal-nuevo-lead')" class="brutal-btn bg-[#6BCB77] px-4 py-2 text-xs font-bold uppercase flex items-center gap-1">
+                <i class="ph-bold ph-user-plus text-base"></i> Nuevo Contacto
+            </button>
+        </div>
+
+        <div class="brutal-card bg-[#FFFDF7] p-4 mb-6 grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+                <label class="block text-[10px] font-bold uppercase mb-1">Buscar por nombre o correo</label>
+                <input type="text" id="crm-search" oninput="filtrarCRM()" placeholder="EJ: Carlos..." class="w-full border-2 border-black p-2 text-xs bg-white focus:outline-none">
+            </div>
+            <div>
+                <label class="block text-[10px] font-bold uppercase mb-1">Filtrar por Etapa</label>
+                <select id="crm-filtro-etapa" onchange="filtrarCRM()" class="w-full border-2 border-black p-2 text-xs font-bold bg-white focus:outline-none">
+                    <option value="">Todas las etapas</option>
+                    <option value="Lead">Lead</option>
+                    <option value="Interesado">Interesado</option>
+                    <option value="Inscrito">Inscrito</option>
+                    <option value="VIP">VIP</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-[10px] font-bold uppercase mb-1">Filtrar por Curso de Interés</label>
+                <select id="crm-filtro-curso" onchange="filtrarCRM()" class="w-full border-2 border-black p-2 text-xs font-bold bg-white focus:outline-none">
+                    <option value="">Todos los cursos</option>
+                    <option value="Adobe Photoshop">Adobe Photoshop</option>
+                    <option value="Adobe Illustrator">Adobe Illustrator</option>
+                    <option value="Figma UI/UX">Figma UI/UX</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-[10px] font-bold uppercase mb-1">Filtrar por Origen</label>
+                <select id="crm-filtro-origen" onchange="filtrarCRM()" class="w-full border-2 border-black p-2 text-xs font-bold bg-white focus:outline-none">
+                    <option value="">Todos los orígenes</option>
+                    <option value="Formulario Web">Formulario Web</option>
+                    <option value="Registro Directo">Registro Directo</option>
+                    <option value="Pasarela de Pago">Pasarela de Pago</option>
+                    <option value="Campaña Ads">Campaña Ads</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="border-3 border-black overflow-x-auto shadow-[4px_4px_0px_0px_#000]">
+            <table class="w-full text-left border-collapse bg-white">
+                <thead>
+                    <tr class="bg-black text-white text-xs uppercase">
+                        <th class="p-3 border-r-2 border-white">Nombre</th>
+                        <th class="p-3 border-r-2 border-white">Correo</th>
+                        <th class="p-3 border-r-2 border-white">Teléfono</th>
+                        <th class="p-3 border-r-2 border-white">Curso de Interés</th>
+                        <th class="p-3 border-r-2 border-white">Origen</th>
+                        <th class="p-3 border-r-2 border-white">Etapa</th>
+                        <th class="p-3 text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="crm-tabla-body" class="text-xs font-medium divide-y-2 divide-black"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 2. PROGRAMAS DESTACADOS -->
     <section id="cursos" class="py-16 px-6 max-w-7xl mx-auto w-full border-t-4 border-black">
         <h2 class="text-3xl font-bold uppercase mb-8">Programas Destacados</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="brutal-card bg-[#FFD93D] p-6">
-                <div class="text-3xl font-bold mb-2">Ps</div>
-                <h3 class="text-xl font-bold mb-2">Adobe Photoshop</h3>
-                <p class="text-xs font-medium mb-4">Retoque digital, fotomontaje y tratamiento de color profesional.</p>
-                <span class="bg-black text-white text-[10px] px-2 py-1 uppercase font-bold">24 Horas</span>
+            <div class="brutal-card bg-[#FFD93D] p-6 flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl font-bold mb-2">Ps</div>
+                    <h3 class="text-xl font-bold mb-2">Adobe Photoshop</h3>
+                    <p class="text-xs font-medium mb-4">Retoque digital, fotomontaje y tratamiento de color profesional.</p>
+                </div>
+                <div class="flex justify-between items-center mt-4 pt-3 border-t-2 border-black">
+                    <span class="bg-black text-white text-[10px] px-2 py-1 uppercase font-bold">$50.000 COP</span>
+                    <div id="btn-curso-1">
+                        <button type="button" onclick="abrirPasarelaPago('Adobe Photoshop', 50000)" class="brutal-btn bg-white text-black px-3 py-1.5 text-xs font-bold uppercase">Inscribirme _</button>
+                    </div>
+                </div>
             </div>
-            <div class="brutal-card bg-[#FF6B6B] text-white p-6">
-                <div class="text-3xl font-bold mb-2">Ai</div>
-                <h3 class="text-xl font-bold mb-2">Adobe Illustrator</h3>
-                <p class="text-xs font-medium mb-4 text-slate-100">Ilustración vectorial, desarrollo de marcas e iconografía.</p>
-                <span class="bg-white text-black text-[10px] px-2 py-1 uppercase font-bold">20 Horas</span>
+            <div class="brutal-card bg-[#FF6B6B] text-white p-6 flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl font-bold mb-2">Ai</div>
+                    <h3 class="text-xl font-bold mb-2">Adobe Illustrator</h3>
+                    <p class="text-xs font-medium mb-4 text-slate-100">Ilustración vectorial, desarrollo de marcas e iconografía.</p>
+                </div>
+                <div class="flex justify-between items-center mt-4 pt-3 border-t-2 border-black">
+                    <span class="bg-white text-black text-[10px] px-2 py-1 uppercase font-bold">$50.000 COP</span>
+                    <div id="btn-curso-2">
+                        <button type="button" onclick="abrirPasarelaPago('Adobe Illustrator', 50000)" class="brutal-btn bg-white text-black px-3 py-1.5 text-xs font-bold uppercase">Inscribirme _</button>
+                    </div>
+                </div>
             </div>
-            <div class="brutal-card bg-[#4D96FF] text-white p-6">
-                <div class="text-3xl font-bold mb-2">Fg</div>
-                <h3 class="text-xl font-bold mb-2">Figma UI/UX</h3>
-                <p class="text-xs font-medium mb-4 text-slate-100">Diseño de interfaces web/app y prototipado interactivo.</p>
-                <span class="bg-white text-black text-[10px] px-2 py-1 uppercase font-bold">30 Horas</span>
+            <div class="brutal-card bg-[#4D96FF] text-white p-6 flex flex-col justify-between">
+                <div>
+                    <div class="text-3xl font-bold mb-2">Fg</div>
+                    <h3 class="text-xl font-bold mb-2">Figma UI/UX</h3>
+                    <p class="text-xs font-medium mb-4 text-slate-100">Diseño de interfaces web/app y prototipado interactivo.</p>
+                </div>
+                <div class="flex justify-between items-center mt-4 pt-3 border-t-2 border-black">
+                    <span class="bg-white text-black text-[10px] px-2 py-1 uppercase font-bold">$50.000 COP</span>
+                    <div id="btn-curso-3">
+                        <button type="button" onclick="abrirPasarelaPago('Figma UI/UX', 50000)" class="brutal-btn bg-white text-black px-3 py-1.5 text-xs font-bold uppercase">Inscribirme _</button>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Sección Mis Cursos (Aula Virtual con Barra de Progreso e Inscripción) -->
+    <!-- 3. MIS CURSOS Y PROGRESO (AULA VIRTUAL) -->
     <section id="lecciones" class="py-16 px-6 max-w-7xl mx-auto w-full border-t-4 border-black">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
             <div>
                 <span class="bg-[#FF6B6B] text-white font-bold text-xs uppercase px-3 py-1 border-2 border-black inline-block mb-2 shadow-[2px_2px_0px_0px_#000]">Área de Alumno</span>
                 <h2 class="text-3xl font-bold uppercase">Mis Cursos y Progreso</h2>
             </div>
-            <!-- Botón Crear Curso (Solo para el admin) -->
             <button type="button" id="btn-crear-curso" style="display: none;" onclick="abrirModal('modal-admin'); prepararCreacionCurso();" class="brutal-btn bg-[#FFD93D] px-4 py-2 text-xs font-bold uppercase flex items-center gap-1">
                 <i class="ph-bold ph-plus-circle text-base"></i> Crear Nuevo Curso
             </button>
         </div>
-
-        <div id="cursos-container" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Renderizado dinámico vía JavaScript según los cursos inscritos -->
-        </div>
+        <div id="cursos-container" class="grid grid-cols-1 lg:grid-cols-3 gap-6"></div>
     </section>
 
-    <!-- Software -->
+    <!-- 4. ECOSISTEMA DE SOFTWARE (RESTAURADO) -->
     <section id="software" class="py-16 px-6 bg-[#FFE600] border-t-4 border-black">
         <div class="max-w-7xl mx-auto text-center">
-            <h2 class="text-3xl font-bold uppercase mb-8">Ecosistema de Software</h2>
+            <h2 class="text-3xl font-bold uppercase mb-4">Ecosistema de Software</h2>
+            <p class="text-xs font-bold uppercase mb-8 text-slate-800">Haz clic en cualquier panel para ver su funcionamiento:</p>
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-                <div class="brutal-card bg-white p-4 font-bold text-center">Photoshop</div>
-                <div class="brutal-card bg-white p-4 font-bold text-center">Illustrator</div>
-                <div class="brutal-card bg-white p-4 font-bold text-center">Figma</div>
-                <div class="brutal-card bg-white p-4 font-bold text-center">Premiere</div>
-                <div class="brutal-card bg-white p-4 font-bold text-center">After Effects</div>
-                <div class="brutal-card bg-white p-4 font-bold text-center">Canva Pro</div>
+                <div data-software="Photoshop" class="software-card brutal-card bg-white p-4 font-bold text-center cursor-pointer hover:bg-[#FFFDF7] transition">Photoshop</div>
+                <div data-software="Illustrator" class="software-card brutal-card bg-white p-4 font-bold text-center cursor-pointer hover:bg-[#FFFDF7] transition">Illustrator</div>
+                <div data-software="Figma" class="software-card brutal-card bg-white p-4 font-bold text-center cursor-pointer hover:bg-[#FFFDF7] transition">Figma</div>
+                <div data-software="Premiere" class="software-card brutal-card bg-white p-4 font-bold text-center cursor-pointer hover:bg-[#FFFDF7] transition">Premiere</div>
+                <div data-software="After Effects" class="software-card brutal-card bg-white p-4 font-bold text-center cursor-pointer hover:bg-[#FFFDF7] transition">After Effects</div>
+                <div data-software="Canva Pro" class="software-card brutal-card bg-white p-4 font-bold text-center cursor-pointer hover:bg-[#FFFDF7] transition">Canva Pro</div>
             </div>
         </div>
     </section>
 
-    <!-- Metodología -->
+    <!-- 5. METODOLOGÍA DE ESTUDIO (RESTAURADO) -->
     <section id="metodologia" class="py-16 px-6 max-w-7xl mx-auto w-full border-t-4 border-black">
         <h2 class="text-3xl font-bold uppercase mb-8 text-center">Metodología de Estudio</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -177,108 +253,132 @@
         </div>
     </section>
 
-    <!-- MODAL PANEL ADMIN (CREAR / EDITAR / INSCRIBIR USUARIOS) -->
+    <!-- MODALES -->
+    <div id="modal-nuevo-lead" style="display: none;" class="fixed inset-0 bg-black/70 z-50 items-center justify-center p-4">
+        <div class="brutal-card bg-white p-6 w-full max-w-md text-black relative">
+            <div class="flex justify-between items-center mb-4 pb-2 border-b-2 border-black">
+                <h3 class="font-bold text-base uppercase">Agregar Nuevo Contacto al CRM</h3>
+                <button type="button" onclick="cerrarModal('modal-nuevo-lead')" class="font-bold text-lg">✕</button>
+            </div>
+            <form onsubmit="guardarNuevoLead(event)" class="space-y-3">
+                <input type="text" id="lead-nombre" required placeholder="Nombre Completo" class="border-2 border-black p-2 w-full text-xs font-medium bg-white">
+                <input type="email" id="lead-email" required placeholder="Correo Electrónico" class="border-2 border-black p-2 w-full text-xs font-medium bg-white">
+                <input type="tel" id="lead-tel" required placeholder="Teléfono" class="border-2 border-black p-2 w-full text-xs font-medium bg-white">
+                <select id="lead-curso" required class="border-2 border-black p-2 w-full text-xs font-bold bg-white">
+                    <option value="Adobe Photoshop">Adobe Photoshop</option>
+                    <option value="Adobe Illustrator">Adobe Illustrator</option>
+                    <option value="Figma UI/UX">Figma UI/UX</option>
+                </select>
+                <select id="lead-origen" required class="border-2 border-black p-2 w-full text-xs font-bold bg-white">
+                    <option value="Formulario Web">Formulario Web</option>
+                    <option value="Campaña Ads">Campaña Ads</option>
+                    <option value="Referido">Referido</option>
+                    <option value="Registro Directo">Registro Directo</option>
+                </select>
+                <select id="lead-etapa" required class="border-2 border-black p-2 w-full text-xs font-bold bg-white">
+                    <option value="Lead">Lead</option>
+                    <option value="Interesado">Interesado</option>
+                    <option value="Inscrito">Inscrito</option>
+                    <option value="VIP">VIP</option>
+                </select>
+                <button type="submit" class="brutal-btn bg-[#6BCB77] text-black w-full py-2.5 font-bold uppercase text-xs mt-3">Guardar Contacto _</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-pasarela" style="display: none;" class="fixed inset-0 bg-black/70 z-50 items-center justify-center p-4">
+        <div class="brutal-card bg-white p-6 w-full max-w-md text-black relative">
+            <div class="flex justify-between items-center mb-4 pb-2 border-b-2 border-black">
+                <h3 class="font-bold text-base uppercase">// Pasarela de Pago Segura</h3>
+                <button type="button" onclick="cerrarModal('modal-pasarela')" class="font-bold text-lg">✕</button>
+            </div>
+            <div class="bg-[#FFFDF7] border-2 border-black p-4 mb-4">
+                <p id="pago-curso-titulo" class="text-lg font-bold uppercase text-black mb-2"></p>
+                <div class="flex justify-between items-center pt-2 border-t border-slate-300">
+                    <span class="text-xs font-bold uppercase">Total a pagar:</span>
+                    <span id="pago-curso-monto" class="text-sm font-bold bg-[#6BCB77] px-2 py-1 border-2 border-black"></span>
+                </div>
+            </div>
+            <form onsubmit="procesarPagoInterno(event)" class="space-y-3">
+                <input type="hidden" id="pago-curso-nombre-hidden">
+                <input type="text" required placeholder="Nombre en la Tarjeta" class="border-2 border-black p-2 w-full text-xs font-medium bg-white">
+                <input type="text" required placeholder="Número de Tarjeta" maxlength="19" class="border-2 border-black p-2 w-full text-xs font-medium bg-white">
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="text" required placeholder="MM/AA" maxlength="5" class="border-2 border-black p-2 w-full text-xs font-medium bg-white">
+                    <input type="password" required placeholder="CVV" maxlength="4" class="border-2 border-black p-2 w-full text-xs font-medium bg-white">
+                </div>
+                <button type="submit" class="brutal-btn bg-[#6BCB77] text-black w-full py-3 font-bold uppercase text-xs mt-4">Confirmar Pago _</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-software" style="display: none;" class="fixed inset-0 bg-black/60 z-50 items-center justify-center p-4">
+        <div class="brutal-card bg-white p-6 w-full max-w-lg text-black relative">
+            <div class="flex justify-between items-center mb-4 pb-2 border-b-2 border-black">
+                <h3 id="software-modal-title" class="font-bold text-xl uppercase tracking-wider">// SOFTWARE</h3>
+                <button type="button" onclick="cerrarModal('modal-software')" class="brutal-btn bg-white px-2 py-1 font-bold text-sm">✕</button>
+            </div>
+            <p id="software-modal-desc" class="text-sm font-medium mb-6 leading-relaxed bg-[#FFFDF7] p-4 border-2 border-black"></p>
+            <div class="flex justify-end">
+                <button type="button" onclick="cerrarModal('modal-software')" class="brutal-btn bg-[#6BCB77] px-6 py-2.5 font-bold uppercase text-xs">Entendido _</button>
+            </div>
+        </div>
+    </div>
+
     <div id="modal-admin" style="display: none;" class="fixed inset-0 bg-black/70 z-50 items-center justify-center p-4 overflow-y-auto">
         <div class="brutal-card bg-[#FFFDF7] p-6 w-full max-w-2xl my-8 text-black relative">
             <div class="flex justify-between items-center mb-6 pb-3 border-b-4 border-black">
-                <h3 id="admin-modal-title" class="font-bold text-xl uppercase tracking-wider flex items-center gap-2">
-                    <span class="bg-black text-[#FFE600] px-2 py-0.5">//</span>
-                    CREAR NUEVO CURSO
-                </h3>
-                <button type="button" onclick="cerrarModal('modal-admin')" class="brutal-btn bg-white px-2 py-1 font-bold text-sm hover:bg-[#FF6B6B] hover:text-white transition">
-                    ✕
-                </button>
+                <h3 id="admin-modal-title" class="font-bold text-xl uppercase tracking-wider">// CREAR NUEVO CURSO</h3>
+                <button type="button" onclick="cerrarModal('modal-admin')" class="brutal-btn bg-white px-2 py-1 font-bold text-sm">✕</button>
             </div>
-
             <form id="form-curso" onsubmit="guardarCurso(event)" class="space-y-4">
                 <input type="hidden" id="curso-id">
-
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-bold uppercase mb-1">Título del Curso *</label>
-                        <input type="text" id="curso-titulo" required placeholder="EJ: ADOBE PHOTOSHOP" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold uppercase mb-1">Sigla / Badge *</label>
-                        <input type="text" id="curso-badge" required placeholder="EJ: PS, AI, FG" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white focus:outline-none">
-                    </div>
+                    <input type="text" id="curso-titulo" required placeholder="Título del Curso" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white">
+                    <input type="text" id="curso-badge" required placeholder="Badge (EJ: PS)" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white">
                 </div>
-
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-bold uppercase mb-1">Color del Badge *</label>
-                        <select id="curso-color" required class="w-full border-2 border-black p-2.5 text-sm font-bold bg-white focus:outline-none">
-                            <option value="#FFD93D">Amarillo (#FFD93D)</option>
-                            <option value="#FF6B6B">Rojo (#FF6B6B)</option>
-                            <option value="#4D96FF">Azul (#4D96FF)</option>
-                            <option value="#6BCB77">Verde (#6BCB77)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold uppercase mb-1">Duración Estimada *</label>
-                        <input type="text" id="curso-duracion" required placeholder="EJ: 24 Horas" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white focus:outline-none">
-                    </div>
+                    <select id="curso-color" required class="w-full border-2 border-black p-2.5 text-sm font-bold bg-white">
+                        <option value="#FFD93D">Amarillo</option>
+                        <option value="#FF6B6B">Rojo</option>
+                        <option value="#4D96FF">Azul</option>
+                        <option value="#6BCB77">Verde</option>
+                    </select>
+                    <input type="text" id="curso-duracion" required placeholder="Duración (EJ: 24 Horas)" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white">
                 </div>
-
-                <!-- CAMPO DE INSCRIPCIÓN DE ALUMNOS -->
-                <div>
-                    <label class="block text-xs font-bold uppercase mb-1">Correos de Alumnos Inscritos (separados por coma) *</label>
-                    <input type="text" id="curso-inscritos" placeholder="ej: alumno1@correo.com, alumno2@correo.com" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white focus:outline-none">
-                    <span class="text-[10px] text-slate-600 block mt-1">Solo los usuarios con estos correos podrán visualizar el curso en "Mis Cursos".</span>
-                </div>
-
+                <input type="text" id="curso-inscritos" placeholder="Alumnos inscritos (separados por coma)" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white">
                 <div class="border-t-2 border-black pt-4 mt-4">
                     <div class="flex justify-between items-center mb-3">
                         <label class="text-xs font-bold uppercase">Lecciones y Recursos</label>
-                        <button type="button" onclick="agregarCampoLeccion()" class="brutal-btn bg-[#FFE600] px-3 py-1 text-[11px] font-bold uppercase">
-                            + Agregar Lección
-                        </button>
+                        <button type="button" onclick="agregarCampoLeccion()" class="brutal-btn bg-[#FFE600] px-3 py-1 text-[11px] font-bold uppercase">+ Agregar Lección</button>
                     </div>
-
-                    <div id="lecciones-wrapper" class="space-y-3 max-h-60 overflow-y-auto p-2 border-2 border-black bg-white">
-                        <!-- Campos inyectados con JS -->
-                    </div>
+                    <div id="lecciones-wrapper" class="space-y-3 max-h-60 overflow-y-auto p-2 border-2 border-black bg-white"></div>
                 </div>
-
                 <div class="flex justify-end gap-3 pt-4 border-t-2 border-black mt-6">
-                    <button type="button" onclick="cerrarModal('modal-admin')" class="brutal-btn bg-white font-bold text-xs uppercase px-4 py-2.5">
-                        Cancelar
-                    </button>
-                    <button type="submit" class="brutal-btn bg-[#6BCB77] text-black font-bold text-xs uppercase px-6 py-2.5">
-                        Guardar Curso _
-                    </button>
+                    <button type="button" onclick="cerrarModal('modal-admin')" class="brutal-btn bg-white font-bold text-xs uppercase px-4 py-2.5">Cancelar</button>
+                    <button type="submit" class="brutal-btn bg-[#6BCB77] text-black font-bold text-xs uppercase px-6 py-2.5">Guardar Curso _</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- MODAL INFO -->
     <div id="modal-info" style="display: none;" class="fixed inset-0 bg-black/60 z-50 items-center justify-center p-4">
         <div class="brutal-card bg-[#FFE600] p-6 w-full max-w-lg text-black relative">
             <div class="flex justify-between items-center mb-6 pb-3 border-b-4 border-black">
-                <h3 class="font-bold text-xl uppercase tracking-wider flex items-center gap-2">
-                    <span class="bg-black text-[#FFE600] px-2 py-0.5">//</span>
-                    MÁS INFORMACIÓN
-                </h3>
-                <button type="button" onclick="cerrarModal('modal-info')" class="brutal-btn bg-white px-2 py-1 font-bold text-sm hover:bg-[#FF6B6B] hover:text-white transition">
-                    ✕
-                </button>
+                <h3 class="font-bold text-xl uppercase tracking-wider">// MÁS INFORMACIÓN</h3>
+                <button type="button" onclick="cerrarModal('modal-info')" class="brutal-btn bg-white px-2 py-1 font-bold text-sm">✕</button>
             </div>
-            <form onsubmit="event.preventDefault(); alert('Solicitud enviada con éxito'); cerrarModal('modal-info');" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-bold uppercase mb-1">Nombre Completo *</label>
-                    <input type="text" required placeholder="EJ: CARLOS MENDOZA" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white focus:outline-none">
-                </div>
+            <form onsubmit="procesarFormularioInfo(event)" class="space-y-4">
+                <input type="text" id="info-nombre" required placeholder="Nombre Completo" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-bold uppercase mb-1">Correo Electrónico *</label>
-                        <input type="email" required placeholder="USUARIO@CORREO.COM" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold uppercase mb-1">Teléfono / WhatsApp *</label>
-                        <input type="tel" required placeholder="+57 300 000 0000" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white focus:outline-none">
-                    </div>
+                    <input type="email" id="info-email" required placeholder="Correo Electrónico" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white">
+                    <input type="tel" id="info-tel" required placeholder="Teléfono" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white">
                 </div>
+                <select id="info-curso" required class="w-full border-2 border-black p-2.5 text-sm font-bold bg-white">
+                    <option value="Adobe Photoshop">Adobe Photoshop</option>
+                    <option value="Adobe Illustrator">Adobe Illustrator</option>
+                    <option value="Figma UI/UX">Figma UI/UX</option>
+                </select>
                 <div class="flex justify-end gap-3 pt-3 border-t-2 border-black">
                     <button type="button" onclick="cerrarModal('modal-info')" class="brutal-btn bg-white text-black font-bold text-xs uppercase px-4 py-2.5">Cancelar</button>
                     <button type="submit" class="brutal-btn bg-[#6BCB77] text-black font-bold text-xs uppercase px-6 py-2.5">Enviar _</button>
@@ -287,7 +387,6 @@
         </div>
     </div>
 
-    <!-- MODAL LOGIN -->
     <div id="modal-login" style="display: none;" class="fixed inset-0 bg-black/60 z-50 items-center justify-center p-4">
         <div class="brutal-card bg-white p-6 w-full max-w-md">
             <div class="flex justify-between items-center mb-4 pb-2 border-b-2 border-black">
@@ -295,14 +394,20 @@
                 <button type="button" onclick="cerrarModal('modal-login')" class="font-bold text-lg">✕</button>
             </div>
             <form onsubmit="procesarLogin(event)">
-                <input type="email" id="login-email" required placeholder="Correo" class="border-2 border-black p-2 w-full mb-3 text-sm font-medium focus:outline-none bg-white">
-                <input type="password" id="login-password" required placeholder="Contraseña" class="border-2 border-black p-2 w-full mb-4 text-sm font-medium focus:outline-none bg-white">
-                <button type="submit" class="brutal-btn bg-[#6BCB77] text-black w-full py-2.5 font-bold uppercase text-xs">Entrar _</button>
+                <input type="email" id="login-email" required placeholder="Correo" class="border-2 border-black p-2 w-full mb-3 text-sm font-medium bg-white">
+                <input type="password" id="login-password" required placeholder="Contraseña" class="border-2 border-black p-2 w-full mb-4 text-sm font-medium bg-white">
+                <button type="submit" class="brutal-btn bg-[#6BCB77] text-black w-full py-2.5 font-bold uppercase text-xs mb-3">Entrar _</button>
             </form>
+            <div class="pt-3 border-t-2 border-black bg-[#FFFDF7] p-3 border-2 border-black">
+                <span class="text-[10px] font-bold uppercase block mb-2 text-center text-slate-700">// Credenciales de Prueba</span>
+                <div class="grid grid-cols-2 gap-2">
+                    <button type="button" onclick="llenarCredenciales('comprador')" class="brutal-btn bg-[#FFD93D] text-black text-[10px] font-bold py-1.5 px-2 uppercase">👤 Comprador</button>
+                    <button type="button" onclick="llenarCredenciales('vendedor')" class="brutal-btn bg-[#6BCB77] text-black text-[10px] font-bold py-1.5 px-2 uppercase">🏷️ Admin</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- MODAL REGISTRO -->
     <div id="modal-register" style="display: none;" class="fixed inset-0 bg-black/60 z-50 items-center justify-center p-4">
         <div class="brutal-card bg-white p-6 w-full max-w-md">
             <div class="flex justify-between items-center mb-4 pb-2 border-b-2 border-black">
@@ -310,19 +415,253 @@
                 <button type="button" onclick="cerrarModal('modal-register')" class="font-bold text-lg">✕</button>
             </div>
             <form onsubmit="procesarRegistro(event)">
-                <input type="text" id="reg-name" required placeholder="Nombre completo" class="border-2 border-black p-2 w-full mb-3 text-sm font-medium focus:outline-none bg-white">
-                <input type="email" id="reg-email" required placeholder="Correo" class="border-2 border-black p-2 w-full mb-3 text-sm font-medium focus:outline-none bg-white">
-                <input type="password" id="reg-password" required placeholder="Contraseña" class="border-2 border-black p-2 w-full mb-4 text-sm font-medium focus:outline-none bg-white">
+                <input type="text" id="reg-name" required placeholder="Nombre completo" class="border-2 border-black p-2 w-full mb-3 text-sm font-medium bg-white">
+                <input type="email" id="reg-email" required placeholder="Correo" class="border-2 border-black p-2 w-full mb-3 text-sm font-medium bg-white">
+                <input type="password" id="reg-password" required placeholder="Contraseña" class="border-2 border-black p-2 w-full mb-4 text-sm font-medium bg-white">
                 <button type="submit" class="brutal-btn bg-[#FF6B6B] text-white w-full py-2.5 font-bold uppercase text-xs">Registrarse _</button>
             </form>
         </div>
     </div>
 
-    <!-- LÓGICA JAVASCRIPT CON FILTRADO DE INSCRIPCIONES -->
+    <!-- LÓGICA JAVASCRIPT -->
     <script>
         const ADMIN_EMAIL = "raygnik2000@gmail.com";
 
-        // --- AUTENTICACIÓN ---
+        const infoSoftware = {
+            "Photoshop": "Adobe Photoshop es el estándar de la industria para la edición de imágenes rasterizadas, retoque fotográfico digital, fotomontajes complejos y pintura digital.",
+            "Illustrator": "Adobe Illustrator es el programa líder en diseño vectorial. Permite crear gráficos totalmente escalables sin pérdida de calidad.",
+            "Figma": "Figma es una herramienta de diseño de interfaces de usuario (UI/UX) y prototipado interactivo basada en la nube.",
+            "Premiere": "Adobe Premiere Pro es un software profesional de edición y postproducción de video.",
+            "After Effects": "Adobe After Effects está enfocado en la creación de gráficos en movimiento y efectos visuales avanzados.",
+            "Canva Pro": "Canva Pro es una plataforma de diseño gráfico en línea intuitiva para la creación ágil de piezas visuales."
+        };
+
+        function abrirModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) modal.style.display = 'flex';
+        }
+
+        function cerrarModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) modal.style.display = 'none';
+        }
+
+        function mostrarInfoSoftware(nombre) {
+            const tituloModal = document.getElementById('software-modal-title');
+            const descModal = document.getElementById('software-modal-desc');
+            if (tituloModal) tituloModal.innerText = "// " + nombre.toUpperCase();
+            if (descModal) descModal.innerText = infoSoftware[nombre] || "Información detallada no disponible.";
+            abrirModal('modal-software');
+        }
+
+        function llenarCredenciales(tipo) {
+            const emailInput = document.getElementById('login-email');
+            const passInput = document.getElementById('login-password');
+            if (tipo === 'comprador') {
+                if (emailInput) emailInput.value = 'comprador@prueba.com';
+                if (passInput) passInput.value = '123456';
+            } else if (tipo === 'vendedor') {
+                if (emailInput) emailInput.value = ADMIN_EMAIL;
+                if (passInput) passInput.value = '123456';
+            }
+        }
+
+        // --- ENVÍO DE CORREO REAL CON EMAILJS ---
+        function enviarCorreoBienvenida(nombre, email, cursoInteres) {
+            const templateParams = {
+                to_name: nombre,
+                to_email: email,
+                curso_interes: cursoInteres || "Adobe Photoshop"
+            };
+
+            emailjs.send('service_58sum4w', 'template_8h3m0w2', templateParams)
+                .then(function(response) {
+                    console.log('¡Correo enviado con éxito a la bandeja!', response.status, response.text);
+                }, function(error) {
+                    console.error('Error al enviar el correo:', error);
+                });
+        }
+
+        // --- SISTEMA CRM DE LEADS ---
+        let crmLeads = [];
+        try {
+            crmLeads = JSON.parse(localStorage.getItem('lcm_crm_leads')) || [];
+        } catch (e) {
+            crmLeads = [];
+        }
+
+        if (crmLeads.length === 0) {
+            crmLeads = [
+                { id: "1", nombre: "Carlos Mendoza", email: "comprador@prueba.com", telefono: "+57 300 111 2233", curso: "Adobe Photoshop", origen: "Registro Directo", etapa: "Inscrito" },
+                { id: "2", nombre: "Lucía Gómez", email: "lucia@prueba.com", telefono: "+57 310 222 3344", curso: "Figma UI/UX", origen: "Formulario Web", etapa: "Interesado" },
+                { id: "3", nombre: "Mateo Rincón", email: "mateo@prueba.com", telefono: "+57 320 333 4455", curso: "Adobe Illustrator", origen: "Campaña Ads", etapa: "Lead" }
+            ];
+            localStorage.setItem('lcm_crm_leads', JSON.stringify(crmLeads));
+        }
+
+        function guardarLeadsStorage() {
+            localStorage.setItem('lcm_crm_leads', JSON.stringify(crmLeads));
+            renderizarCRM();
+        }
+
+        function registrarLeadAutomatico(nombre, email, telefono, curso, origen, etapa = "Lead") {
+            const emailTrim = email.toLowerCase().trim();
+            const existe = crmLeads.find(l => l.email.toLowerCase().trim() === emailTrim);
+            if (!existe) {
+                crmLeads.push({
+                    id: Date.now().toString(),
+                    nombre: nombre.toUpperCase(),
+                    email: emailTrim,
+                    telefono: telefono || "N/A",
+                    curso: curso || "Adobe Photoshop",
+                    origen: origen,
+                    etapa: etapa
+                });
+                guardarLeadsStorage();
+                enviarCorreoBienvenida(nombre, emailTrim, curso);
+            }
+        }
+
+        function guardarNuevoLead(e) {
+            e.preventDefault();
+            const nombre = document.getElementById('lead-nombre').value;
+            const email = document.getElementById('lead-email').value;
+            const tel = document.getElementById('lead-tel').value;
+            const curso = document.getElementById('lead-curso').value;
+            const origen = document.getElementById('lead-origen').value;
+            const etapa = document.getElementById('lead-etapa').value;
+
+            registrarLeadAutomatico(nombre, email, tel, curso, origen, etapa);
+            cerrarModal('modal-nuevo-lead');
+            alert(`¡Contacto añadido al CRM con éxito!\n✉️ Correo automático de bienvenida enviado a ${email}.`);
+            document.getElementById('lead-nombre').value = '';
+            document.getElementById('lead-email').value = '';
+            document.getElementById('lead-tel').value = '';
+        }
+
+        function cambiarEtapaLead(id, nuevaEtapa) {
+            const lead = crmLeads.find(l => l.id === id);
+            if (lead) {
+                lead.etapa = nuevaEtapa;
+                guardarLeadsStorage();
+            }
+        }
+
+        function eliminarLead(id) {
+            if (confirm("¿Deseas eliminar este contacto del CRM?")) {
+                crmLeads = crmLeads.filter(l => l.id !== id);
+                guardarLeadsStorage();
+            }
+        }
+
+        function filtrarCRM() {
+            renderizarCRM();
+        }
+
+        function renderizarCRM() {
+            const tbody = document.getElementById('crm-tabla-body');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            const textoBusqueda = document.getElementById('crm-search')?.value.toLowerCase().trim() || '';
+            const filtroEtapa = document.getElementById('crm-filtro-etapa')?.value || '';
+            const filtroCurso = document.getElementById('crm-filtro-curso')?.value || '';
+            const filtroOrigen = document.getElementById('crm-filtro-origen')?.value || '';
+
+            const leadsFiltrados = crmLeads.filter(lead => {
+                const coincideTexto = lead.nombre.toLowerCase().includes(textoBusqueda) || lead.email.toLowerCase().includes(textoBusqueda);
+                const coincideEtapa = filtroEtapa === '' || lead.etapa === filtroEtapa;
+                const coincideCurso = filtroCurso === '' || lead.curso === filtroCurso;
+                const coincideOrigen = filtroOrigen === '' || lead.origen === filtroOrigen;
+                return coincideTexto && coincideEtapa && coincideCurso && coincideOrigen;
+            });
+
+            if (leadsFiltrados.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-xs font-bold text-slate-500">No se encontraron contactos con los filtros seleccionados.</td></tr>`;
+                return;
+            }
+
+            leadsFiltrados.forEach(lead => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-[#FFFDF7]";
+                tr.innerHTML = `
+                    <td class="p-3 border-r-2 border-black font-bold">${lead.nombre}</td>
+                    <td class="p-3 border-r-2 border-black">${lead.email}</td>
+                    <td class="p-3 border-r-2 border-black">${lead.telefono}</td>
+                    <td class="p-3 border-r-2 border-black"><span class="bg-[#FFE600] px-1.5 py-0.5 border border-black">${lead.curso}</span></td>
+                    <td class="p-3 border-r-2 border-black font-mono text-[11px]">${lead.origen}</td>
+                    <td class="p-3 border-r-2 border-black">
+                        <select onchange="cambiarEtapaLead('${lead.id}', this.value)" class="border-2 border-black p-1 text-xs font-bold bg-white focus:outline-none">
+                            <option value="Lead" ${lead.etapa === 'Lead' ? 'selected' : ''}>Lead</option>
+                            <option value="Interesado" ${lead.etapa === 'Interesado' ? 'selected' : ''}>Interesado</option>
+                            <option value="Inscrito" ${lead.etapa === 'Inscrito' ? 'selected' : ''}>Inscrito</option>
+                            <option value="VIP" ${lead.etapa === 'VIP' ? 'selected' : ''}>VIP</option>
+                        </select>
+                    </td>
+                    <td class="p-3 text-center">
+                        <button type="button" onclick="eliminarLead('${lead.id}')" class="brutal-btn bg-[#FF6B6B] text-white px-2 py-1 text-[10px] font-bold">🗑️</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function abrirPasarelaPago(nombreCurso, precioCurso) {
+            if (!usuarioActual || !usuarioActual.email) {
+                alert("Por favor, inicia sesión antes de realizar la inscripción.");
+                abrirModal('modal-login');
+                return;
+            }
+            document.getElementById('pago-curso-titulo').innerText = nombreCurso;
+            document.getElementById('pago-curso-monto').innerText = "$" + precioCurso.toLocaleString() + " COP";
+            document.getElementById('pago-curso-nombre-hidden').value = nombreCurso;
+            abrirModal('modal-pasarela');
+        }
+
+        function procesarPagoInterno(e) {
+            e.preventDefault();
+            const nombreCurso = document.getElementById('pago-curso-nombre-hidden').value;
+            inscribirUsuarioLocal(nombreCurso);
+            registrarLeadAutomatico(usuarioActual.nombre, usuarioActual.email, "+57 300 000 0000", nombreCurso, "Pasarela de Pago", "Inscrito");
+            cerrarModal('modal-pasarela');
+            alert(`¡Pago simulado con éxito! Ya estás inscrito en: ${nombreCurso}\n✉️ Correo de bienvenida enviado a ${usuarioActual.email}`);
+        }
+
+        function procesarFormularioInfo(e) {
+            e.preventDefault();
+            const nombre = document.getElementById('info-nombre').value;
+            const email = document.getElementById('info-email').value;
+            const tel = document.getElementById('info-tel').value;
+            const curso = document.getElementById('info-curso').value;
+            registrarLeadAutomatico(nombre, email, tel, curso, "Formulario Web", "Interesado");
+            cerrarModal('modal-info');
+            alert(`¡Solicitud enviada con éxito! Te hemos registrado en nuestro CRM.\n✉️ Correo de bienvenida enviado a ${email}`);
+        }
+
+        function inscribirUsuarioLocal(nombreCurso) {
+            if (!usuarioActual || !usuarioActual.email) return;
+            const cursoObj = cursos.find(c => c.titulo.toLowerCase() === nombreCurso.toLowerCase());
+            if (cursoObj) {
+                if (!cursoObj.inscritos) cursoObj.inscritos = [];
+                const emailTrim = usuarioActual.email.toLowerCase().trim();
+                if (!cursoObj.inscritos.map(e => e.toLowerCase().trim()).includes(emailTrim)) {
+                    cursoObj.inscritos.push(usuarioActual.email);
+                    guardarEnStorage();
+                }
+            }
+        }
+
+        function salirDeCurso(cursoId) {
+            if (!usuarioActual || !usuarioActual.email) return;
+            const cursoObj = cursos.find(c => c.id === cursoId);
+            if (cursoObj && cursoObj.inscritos) {
+                const emailTrim = usuarioActual.email.toLowerCase().trim();
+                cursoObj.inscritos = cursoObj.inscritos.filter(e => e.toLowerCase().trim() !== emailTrim);
+                guardarEnStorage();
+                alert("Has cancelado tu inscripción a este curso.");
+            }
+        }
+
         let usuarioActual = null;
         try {
             usuarioActual = JSON.parse(localStorage.getItem('lcm_user')) || null;
@@ -358,6 +697,8 @@
             if (btnCrearCurso) btnCrearCurso.style.display = isAdmin ? 'flex' : 'none';
 
             renderizarCursos();
+            actualizarBotonesInscripcion();
+            renderizarCRM();
         }
 
         function procesarLogin(e) {
@@ -365,9 +706,9 @@
             const emailInput = document.getElementById('login-email');
             const email = emailInput ? emailInput.value.trim() : '';
             const nombre = email.split('@')[0] || 'USUARIO';
-            
             usuarioActual = { nombre: nombre.toUpperCase(), email: email };
             localStorage.setItem('lcm_user', JSON.stringify(usuarioActual));
+            registrarLeadAutomatico(usuarioActual.nombre, usuarioActual.email, "+57 300 000 0000", "Adobe Photoshop", "Registro Directo", "Lead");
             actualizarUIAutenticacion();
             cerrarModal('modal-login');
             alert('¡Bienvenido, ' + usuarioActual.nombre + '!');
@@ -379,12 +720,12 @@
             const emailInput = document.getElementById('reg-email');
             const nombre = nameInput ? nameInput.value.trim() : 'NUEVO USUARIO';
             const email = emailInput ? emailInput.value.trim() : '';
-            
             usuarioActual = { nombre: nombre.toUpperCase(), email: email };
             localStorage.setItem('lcm_user', JSON.stringify(usuarioActual));
+            registrarLeadAutomatico(usuarioActual.nombre, usuarioActual.email, "+57 300 000 0000", "Adobe Photoshop", "Registro Directo", "Lead");
             actualizarUIAutenticacion();
             cerrarModal('modal-register');
-            alert('¡Cuenta creada con éxito, ' + usuarioActual.nombre + '!');
+            alert('¡Cuenta creada con éxito, ' + usuarioActual.nombre + '!\n✉️ Correo automático de bienvenida enviado.');
         }
 
         function cerrarSesion() {
@@ -393,7 +734,6 @@
             actualizarUIAutenticacion();
         }
 
-        // --- CURSOS Y PROGRESO ---
         let cursos = [];
         try {
             cursos = JSON.parse(localStorage.getItem('lcm_cursos'));
@@ -409,7 +749,7 @@
                     badge: "PS",
                     color: "#FFD93D",
                     duracion: "24 Horas",
-                    inscritos: [ADMIN_EMAIL, "raygnik2000@gmail.com"],
+                    inscritos: [ADMIN_EMAIL],
                     lecciones: [
                         { titulo: "Interfaz y Espacio de Trabajo", video: "https://youtube.com", material: "#" },
                         { titulo: "Capas y Máscaras", video: "https://youtube.com", material: "#" }
@@ -422,9 +762,7 @@
                     color: "#FF6B6B",
                     duracion: "20 Horas",
                     inscritos: [ADMIN_EMAIL],
-                    lecciones: [
-                        { titulo: "Pluma y Trazos Vectoriales", video: "https://youtube.com", material: "#" }
-                    ]
+                    lecciones: [{ titulo: "Pluma y Trazos Vectoriales", video: "https://youtube.com", material: "#" }]
                 },
                 {
                     id: "3",
@@ -433,9 +771,7 @@
                     color: "#4D96FF",
                     duracion: "30 Horas",
                     inscritos: [ADMIN_EMAIL],
-                    lecciones: [
-                        { titulo: "Auto Layout y Componentes", video: "https://youtube.com", material: "#" }
-                    ]
+                    lecciones: [{ titulo: "Auto Layout y Componentes", video: "https://youtube.com", material: "#" }]
                 }
             ];
             localStorage.setItem('lcm_cursos', JSON.stringify(cursos));
@@ -451,22 +787,48 @@
         function guardarEnStorage() {
             localStorage.setItem('lcm_cursos', JSON.stringify(cursos));
             renderizarCursos();
+            actualizarBotonesInscripcion();
         }
 
         function toggleLeccion(cursoId, indexLeccion) {
-            if (!progreso[cursoId]) {
-                progreso[cursoId] = [];
-            }
-
+            if (!progreso[cursoId]) progreso[cursoId] = [];
             const pos = progreso[cursoId].indexOf(indexLeccion);
             if (pos > -1) {
                 progreso[cursoId].splice(pos, 1);
             } else {
                 progreso[cursoId].push(indexLeccion);
             }
-
             localStorage.setItem('lcm_progreso', JSON.stringify(progreso));
             renderizarCursos();
+        }
+
+        function actualizarBotonesInscripcion() {
+            const mapCursos = [
+                { idBtn: 'btn-curso-1', nombre: 'Adobe Photoshop' },
+                { idBtn: 'btn-curso-2', nombre: 'Adobe Illustrator' },
+                { idBtn: 'btn-curso-3', nombre: 'Figma UI/UX' }
+            ];
+
+            mapCursos.forEach(item => {
+                const contenedor = document.getElementById(item.idBtn);
+                if (!contenedor) return;
+                const cursoEncontrado = cursos.find(c => c.titulo.toLowerCase() === item.nombre.toLowerCase());
+                let estaInscrito = false;
+
+                if (usuarioActual && cursoEncontrado) {
+                    const isAdmin = esAdministrador();
+                    const inscritos = (cursoEncontrado.inscritos || []).map(e => e.toLowerCase().trim());
+                    if (isAdmin || inscritos.includes(usuarioActual.email.toLowerCase().trim())) {
+                        estaInscrito = true;
+                    }
+                }
+
+                if (estaInscrito) {
+                    contenedor.innerHTML = `<a href="#lecciones" class="brutal-btn bg-[#6BCB77] text-black px-3 py-1.5 text-xs font-bold uppercase inline-flex items-center gap-1">✓ Inscrito</a>`;
+                } else {
+                    contenedor.innerHTML = `<button type="button" onclick="abrirPasarelaPago('${item.nombre}', 50000)" class="brutal-btn bg-white text-black px-3 py-1.5 text-xs font-bold uppercase">Inscribirme _</button>`;
+                }
+            });
         }
 
         function renderizarCursos() {
@@ -474,12 +836,11 @@
             if (!container) return;
             container.innerHTML = '';
 
-            // Si no hay sesión iniciada
             if (!usuarioActual) {
                 container.innerHTML = `
                     <div class="col-span-3 brutal-card bg-white p-8 text-center">
                         <h3 class="font-bold text-lg uppercase mb-2">Inicia sesión para ver tus cursos</h3>
-                        <p class="text-xs text-slate-600 mb-4">Debes ingresar con tu cuenta para acceder a las lecciones asignadas por el administrador.</p>
+                        <p class="text-xs text-slate-600 mb-4">Debes ingresar con tu cuenta para acceder a las lecciones asignadas.</p>
                         <button type="button" onclick="abrirModal('modal-login')" class="brutal-btn bg-[#6BCB77] text-black px-4 py-2 text-xs font-bold uppercase">Iniciar Sesión</button>
                     </div>
                 `;
@@ -488,8 +849,6 @@
 
             const isAdmin = esAdministrador();
             let cursosVisibles = cursos;
-
-            // Si no es admin, filtramos solo los cursos donde su correo esté en 'inscritos'
             if (!isAdmin) {
                 cursosVisibles = cursos.filter(c => {
                     const inscritos = c.inscritos || [];
@@ -500,8 +859,9 @@
             if (cursosVisibles.length === 0) {
                 container.innerHTML = `
                     <div class="col-span-3 brutal-card bg-white p-8 text-center">
-                        <h3 class="font-bold text-lg uppercase mb-2">No tienes cursos asignados</h3>
-                        <p class="text-xs text-slate-600">El administrador aún no te ha inscrito en ningún programa de estudio.</p>
+                        <h3 class="font-bold text-lg uppercase mb-2">No tienes cursos inscritos</h3>
+                        <p class="text-xs text-slate-600 mb-4">Explora nuestros programas destacados arriba y haz clic en "Inscribirme".</p>
+                        <a href="#cursos" class="brutal-btn bg-[#FFE600] text-black px-4 py-2 text-xs font-bold uppercase inline-block">Ver Cursos</a>
                     </div>
                 `;
                 return;
@@ -511,9 +871,7 @@
                 const totalLecciones = (curso.lecciones && Array.isArray(curso.lecciones)) ? curso.lecciones.length : 0;
                 const completadasArr = progreso[curso.id] || [];
                 const leccionesCompletadas = completadasArr.length;
-                
                 const porcentaje = totalLecciones > 0 ? Math.round((leccionesCompletadas / totalLecciones) * 100) : 0;
-
                 const card = document.createElement('div');
                 card.className = "brutal-card bg-white p-6 flex flex-col justify-between";
 
@@ -538,15 +896,12 @@
                     });
                 }
 
-                let adminCardButtons = '';
-                if (isAdmin) {
-                    adminCardButtons = `
-                        <div class="flex gap-1">
-                            <button type="button" onclick="editarCurso('${curso.id}')" title="Editar" class="brutal-btn bg-[#FFE600] px-2 py-1 text-xs font-bold">✏️</button>
-                            <button type="button" onclick="eliminarCurso('${curso.id}')" title="Eliminar" class="brutal-btn bg-[#FF6B6B] text-white px-2 py-1 text-xs font-bold">🗑️</button>
-                        </div>
-                    `;
-                }
+                let adminCardButtons = isAdmin ? `
+                    <div class="flex gap-1">
+                        <button type="button" onclick="editarCurso('${curso.id}')" title="Editar" class="brutal-btn bg-[#FFE600] px-2 py-1 text-xs font-bold">✏️</button>
+                        <button type="button" onclick="eliminarCurso('${curso.id}')" title="Eliminar" class="brutal-btn bg-[#FF6B6B] text-white px-2 py-1 text-xs font-bold">🗑️</button>
+                    </div>
+                ` : '';
 
                 card.innerHTML = `
                     <div>
@@ -554,8 +909,6 @@
                             <span class="font-bold text-sm px-2 py-0.5 border border-black" style="background-color: ${curso.color || '#FFD93D'}">${curso.badge || 'CRS'} - ${curso.titulo || 'Curso'}</span>
                             ${adminCardButtons}
                         </div>
-
-                        <!-- BARRA DE PROGRESO -->
                         <div class="mb-4 bg-white border-2 border-black p-2 shadow-[2px_2px_0px_0px_#000]">
                             <div class="flex justify-between text-xs font-bold uppercase mb-1">
                                 <span>Progreso</span>
@@ -565,13 +918,11 @@
                                 <div class="bg-[#6BCB77] h-full transition-all duration-300" style="width: ${porcentaje}%"></div>
                             </div>
                         </div>
-
-                        <ul class="space-y-3 mb-6">
-                            ${leccionesHTML || '<li class="text-xs font-bold text-slate-500">Sin lecciones registradas</li>'}
-                        </ul>
+                        <ul class="space-y-3 mb-6">${leccionesHTML || '<li class="text-xs font-bold text-slate-500">Sin lecciones registradas</li>'}</ul>
                     </div>
-                    <div class="text-xs font-bold bg-black text-white p-2 text-center uppercase">
-                        ${curso.duracion || '0 Horas'} • ${totalLecciones} Lección(es)
+                    <div class="flex justify-between items-center bg-black text-white p-2 text-center uppercase">
+                        <span class="text-xs font-bold">${curso.duracion || '0 Horas'} • ${totalLecciones} Lección(es)</span>
+                        <button type="button" onclick="salirDeCurso('${curso.id}')" class="text-[10px] bg-[#FF6B6B] text-white px-2 py-1 font-bold uppercase border border-white hover:bg-red-700 transition">✕ Salir</button>
                     </div>
                 `;
                 container.appendChild(card);
@@ -579,22 +930,12 @@
         }
 
         function prepararCreacionCurso() {
-            if (!esAdministrador()) {
-                alert("Acceso denegado.");
-                return;
-            }
-            const formCurso = document.getElementById('form-curso');
-            const cursoId = document.getElementById('curso-id');
-            const modalTitle = document.getElementById('admin-modal-title');
-            const inscritosField = document.getElementById('curso-inscritos');
-            const wrapper = document.getElementById('lecciones-wrapper');
-
-            if (formCurso) formCurso.reset();
-            if (cursoId) cursoId.value = '';
-            if (modalTitle) modalTitle.innerText = '// CREAR NUEVO CURSO';
-            if (inscritosField) inscritosField.value = ADMIN_EMAIL; // Por defecto el admin
-            if (wrapper) wrapper.innerHTML = '';
-            
+            if (!esAdministrador()) return;
+            document.getElementById('form-curso').reset();
+            document.getElementById('curso-id').value = '';
+            document.getElementById('admin-modal-title').innerText = '// CREAR NUEVO CURSO';
+            document.getElementById('curso-inscritos').value = ADMIN_EMAIL;
+            document.getElementById('lecciones-wrapper').innerHTML = '';
             agregarCampoLeccion();
         }
 
@@ -602,7 +943,6 @@
             const wrapper = document.getElementById('lecciones-wrapper');
             if (!wrapper) return;
             const index = wrapper.children.length;
-
             const div = document.createElement('div');
             div.className = "border-2 border-black p-3 bg-[#FFFDF7] space-y-2 relative brutal-card";
             div.innerHTML = `
@@ -612,75 +952,43 @@
                 </div>
                 <input type="text" class="lec-titulo w-full border-2 border-black p-1.5 text-xs font-bold" placeholder="Título de la lección" value="${titulo}" required>
                 <div class="grid grid-cols-2 gap-2">
-                    <input type="url" class="lec-video w-full border-2 border-black p-1.5 text-xs" placeholder="URL Video (YouTube)" value="${video}">
-                    <input type="url" class="lec-material w-full border-2 border-black p-1.5 text-xs" placeholder="URL Material (Drive/Zip)" value="${material}">
+                    <input type="url" class="lec-video w-full border-2 border-black p-1.5 text-xs" placeholder="URL Video" value="${video}">
+                    <input type="url" class="lec-material w-full border-2 border-black p-1.5 text-xs" placeholder="URL Material" value="${material}">
                 </div>
             `;
             wrapper.appendChild(div);
         }
 
         function editarCurso(id) {
-            if (!esAdministrador()) {
-                alert("Acceso denegado.");
-                return;
-            }
+            if (!esAdministrador()) return;
             const curso = cursos.find(c => c.id === id);
             if (!curso) return;
-
-            const cursoId = document.getElementById('curso-id');
-            const cursoTitulo = document.getElementById('curso-titulo');
-            const cursoBadge = document.getElementById('curso-badge');
-            const cursoColor = document.getElementById('curso-color');
-            const cursoDuracion = document.getElementById('curso-duracion');
-            const cursoInscritos = document.getElementById('curso-inscritos');
-            const modalTitle = document.getElementById('admin-modal-title');
+            document.getElementById('curso-id').value = curso.id;
+            document.getElementById('curso-titulo').value = curso.titulo;
+            document.getElementById('curso-badge').value = curso.badge;
+            document.getElementById('curso-color').value = curso.color;
+            document.getElementById('curso-duracion').value = curso.duracion;
+            document.getElementById('curso-inscritos').value = (curso.inscritos || []).join(', ');
+            document.getElementById('admin-modal-title').innerText = '// EDITAR CURSO';
             const wrapper = document.getElementById('lecciones-wrapper');
-
-            if (cursoId) cursoId.value = curso.id;
-            if (cursoTitulo) cursoTitulo.value = curso.titulo;
-            if (cursoBadge) cursoBadge.value = curso.badge;
-            if (cursoColor) cursoColor.value = curso.color;
-            if (cursoDuracion) cursoDuracion.value = curso.duracion;
-            if (cursoInscritos) cursoInscritos.value = (curso.inscritos || []).join(', ');
-            if (modalTitle) modalTitle.innerText = '// EDITAR CURSO';
-            
-            if (wrapper) {
-                wrapper.innerHTML = '';
-                if (curso.lecciones && curso.lecciones.length > 0) {
-                    curso.lecciones.forEach(l => {
-                        agregarCampoLeccion(l.titulo, l.video, l.material);
-                    });
-                } else {
-                    agregarCampoLeccion();
-                }
+            wrapper.innerHTML = '';
+            if (curso.lecciones && curso.lecciones.length > 0) {
+                curso.lecciones.forEach(l => agregarCampoLeccion(l.titulo, l.video, l.material));
+            } else {
+                agregarCampoLeccion();
             }
-
             abrirModal('modal-admin');
         }
 
         function guardarCurso(e) {
             e.preventDefault();
-            if (!esAdministrador()) {
-                alert("Acceso denegado. No tienes permisos para guardar cursos.");
-                cerrarModal('modal-admin');
-                return;
-            }
-
-            const idField = document.getElementById('curso-id');
-            const tituloField = document.getElementById('curso-titulo');
-            const badgeField = document.getElementById('curso-badge');
-            const colorField = document.getElementById('curso-color');
-            const duracionField = document.getElementById('curso-duracion');
-            const inscritosField = document.getElementById('curso-inscritos');
-
-            const id = idField && idField.value ? idField.value : Date.now().toString();
-            const titulo = tituloField ? tituloField.value : '';
-            const badge = badgeField ? badgeField.value : '';
-            const color = colorField ? colorField.value : '#FFD93D';
-            const duracion = duracionField ? duracionField.value : '';
-            
-            // Procesar correos inscritos separados por coma
-            const inscritosText = inscritosField ? inscritosField.value : '';
+            if (!esAdministrador()) return;
+            const id = document.getElementById('curso-id').value || Date.now().toString();
+            const titulo = document.getElementById('curso-titulo').value;
+            const badge = document.getElementById('curso-badge').value;
+            const color = document.getElementById('curso-color').value;
+            const duracion = document.getElementById('curso-duracion').value;
+            const inscritosText = document.getElementById('curso-inscritos').value;
             const inscritos = inscritosText ? inscritosText.split(',').map(e => e.trim()).filter(e => e !== '') : [];
 
             const lecciones = [];
@@ -688,30 +996,20 @@
                 const lecTitulo = div.querySelector('.lec-titulo')?.value || '';
                 const lecVideo = div.querySelector('.lec-video')?.value || '';
                 const lecMaterial = div.querySelector('.lec-material')?.value || '';
-
-                if (lecTitulo.trim() !== '') {
-                    lecciones.push({ titulo: lecTitulo, video: lecVideo, material: lecMaterial });
-                }
+                if (lecTitulo.trim() !== '') lecciones.push({ titulo: lecTitulo, video: lecVideo, material: lecMaterial });
             });
 
             const index = cursos.findIndex(c => c.id === id);
             const nuevoCurso = { id, titulo, badge, color, duracion, inscritos, lecciones };
-
-            if (index >= 0) {
-                cursos[index] = nuevoCurso;
-            } else {
-                cursos.push(nuevoCurso);
-            }
+            if (index >= 0) cursos[index] = nuevoCurso;
+            else cursos.push(nuevoCurso);
 
             guardarEnStorage();
             cerrarModal('modal-admin');
         }
 
         function eliminarCurso(id) {
-            if (!esAdministrador()) {
-                alert("Acceso denegado.");
-                return;
-            }
+            if (!esAdministrador()) return;
             if (confirm("¿Estás seguro de que deseas eliminar este curso?")) {
                 cursos = cursos.filter(c => c.id !== id);
                 delete progreso[id];
@@ -721,8 +1019,19 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            renderizarCursos();
-            actualizarUIAutenticacion();
+            try {
+                renderizarCursos();
+                actualizarUIAutenticacion();
+                actualizarBotonesInscripcion();
+                document.querySelectorAll('.software-card').forEach(card => {
+                    card.addEventListener('click', () => {
+                        const nombreSoftware = card.getAttribute('data-software');
+                        if (nombreSoftware) mostrarInfoSoftware(nombreSoftware);
+                    });
+                });
+            } catch (err) {
+                console.error("Error en la inicialización:", err);
+            }
         });
     </script>
 </body>
