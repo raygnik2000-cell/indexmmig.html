@@ -75,17 +75,15 @@ function crearPago(emailUsuario, idCurso, monto) {
 }
 function doPost(e) {
   try {
-    // Recibir los datos enviados desde la web
     const datos = JSON.parse(e.postData.contents);
     const email = datos.email;
     const curso = datos.curso;
     const monto = datos.monto;
 
-    // Llamar a tu función crearPago existente
-    const resultadoPago = crearPago(email, curso, monto);
+    // Llamada a la función que conecta con la pasarela (Wompi, PayU, Stripe, etc.)
+    const respuestaPago = crearPago(email, curso, monto);
 
-    // Responder en formato JSON a la página web
-    return ContentService.createTextOutput(JSON.stringify(resultadoPago))
+    return ContentService.createTextOutput(JSON.stringify(respuestaPago))
       .setMimeType(ContentService.MimeType.JSON);
 
   } catch (error) {
