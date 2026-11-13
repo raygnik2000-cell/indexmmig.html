@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LCM Visuals - Neo-Brutalism & CRM</title>
+    <title>LCM Visuals - Diseño y CRM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap" rel="stylesheet">
+
     <!-- EmailJS SDK con tus credenciales -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script type="text/javascript">
@@ -19,49 +19,237 @@
     </script>
 
     <style>
-        body { font-family: 'Space Grotesk', sans-serif; }
+        :root {
+            --tinta: #15131C;
+            --lienzo: #F4F4F8;
+            --linea: rgba(21, 19, 28, .12);
+            --sombra: 0 1px 2px rgba(21, 19, 28, .05), 0 14px 32px -14px rgba(21, 19, 28, .22);
+            --foco: #6C4CF1;
+        }
+
+        html body {
+            font-family: 'Bricolage Grotesque', system-ui, sans-serif !important;
+            background: var(--lienzo) !important;
+            color: var(--tinta);
+        }
+
+        .uppercase { text-transform: none !important; }
+        h1, h2, h3 { letter-spacing: -0.025em; }
+        h1 { font-weight: 800 !important; line-height: 1.02 !important; }
+        h2 { font-weight: 800 !important; }
+
+        header {
+            background: rgba(255, 255, 255, .82) !important;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--linea) !important;
+        }
+        header .bg-black { border-radius: 12px; }
+        header nav { text-transform: none; font-weight: 700; letter-spacing: 0; }
+
         .brutal-card {
-            border: 3px solid #000;
-            box-shadow: 5px 5px 0px 0px #000;
-            transition: all 0.15s ease;
+            border: 1px solid var(--linea) !important;
+            border-radius: 28px;
+            box-shadow: var(--sombra);
+            transition: transform .2s ease, box-shadow .2s ease;
         }
-        .brutal-card:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 7px 7px 0px 0px #000;
-        }
+        .brutal-card:hover { transform: translateY(-4px); }
+
         .brutal-btn {
-            border: 3px solid #000;
-            box-shadow: 4px 4px 0px 0px #000;
+            border: 0 !important;
+            border-radius: 999px;
+            box-shadow: 0 2px 0 rgba(21, 19, 28, .22);
+            text-transform: none !important;
+            font-weight: 700;
+            letter-spacing: 0;
+            padding-left: 1.15rem;
+            padding-right: 1.15rem;
+            transition: transform .15s ease, filter .15s ease;
         }
-        .brutal-btn:active {
-            transform: translate(2px, 2px);
-            box-shadow: 2px 2px 0px 0px #000;
+        .brutal-btn:hover { filter: brightness(1.05); }
+        .brutal-btn:active { transform: translateY(1px); box-shadow: 0 1px 0 rgba(21, 19, 28, .22); }
+        .brutal-btn.px-2.py-1 { padding: .25rem .6rem; }
+
+        .border-2.border-black { border-color: var(--linea) !important; }
+        .border-black { border-color: var(--linea) !important; }
+        span.inline-block.border-2 { border-radius: 999px; box-shadow: none !important; }
+
+        h1 span {
+            border: 0 !important;
+            border-radius: 16px;
+            display: inline-block;
+            padding: 0 .3em;
+            transform: rotate(-1.5deg);
+        }
+
+        .border-t-4 { border-top: 0 !important; }
+        html { scroll-padding-top: 6rem; }
+
+        /* Cada zona es un panel con su propio fondo y mucho aire entre ellas */
+        body > section[id] {
+            width: calc(100% - 2rem);
+            max-width: 80rem;
+            margin: 0 auto;
+            padding-top: 5rem;
+            padding-bottom: 5rem;
+            border-radius: 40px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--sombra);
+        }
+        #inicio h1 { max-width: 48rem; margin-left: auto; margin-right: auto; }
+
+        /* Inicio: formas geométricas sobre una cuadrícula de puntos */
+        #inicio {
+            margin-top: 2rem;
+            background:
+                radial-gradient(circle at 10% 22%, #FFE600 0 70px, transparent 71px),
+                radial-gradient(circle at 92% 82%, #FF6B6B 0 90px, transparent 91px),
+                radial-gradient(circle at 88% 14%, #4D96FF 0 40px, transparent 41px),
+                radial-gradient(circle, rgba(21, 19, 28, .14) 1.5px, transparent 2px) 0 0 / 22px 22px,
+                #FFFFFF;
+        }
+
+        /* CRM: papel cuadriculado tipo plano técnico */
+        #crm-seccion {
+            background:
+                linear-gradient(rgba(77, 150, 255, .16) 1px, transparent 1px) 0 0 / 32px 32px,
+                linear-gradient(90deg, rgba(77, 150, 255, .16) 1px, transparent 1px) 0 0 / 32px 32px,
+                #EAF2FF;
+        }
+
+        /* Programas: puntos de trama de impresión sobre durazno */
+        #cursos {
+            background:
+                radial-gradient(rgba(21, 19, 28, .13) 2px, transparent 2.5px) 0 0 / 18px 18px,
+                #FFEBD9;
+        }
+
+        /* Mis cursos: hoja de cuaderno con línea de margen */
+        #lecciones {
+            background:
+                linear-gradient(90deg, transparent 56px, rgba(255, 107, 107, .5) 56px 58px, transparent 58px),
+                repeating-linear-gradient(transparent 0 31px, rgba(255, 107, 107, .2) 31px 32px),
+                #FFF0F0;
+        }
+
+        /* Software: noche con brillo violeta y puntos de luz */
+        #software {
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(108, 76, 241, .6), transparent 60%),
+                radial-gradient(rgba(255, 255, 255, .15) 1.5px, transparent 2px) 0 0 / 24px 24px,
+                var(--tinta);
+        }
+        #software h2, #software > div > p { color: #fff !important; }
+        #software .brutal-card { border: 0 !important; }
+
+        /* Metodología: rayas diagonales verdes, como una lista de tareas */
+        #metodologia {
+            background:
+                repeating-linear-gradient(135deg, rgba(107, 203, 119, .18) 0 14px, transparent 14px 28px),
+                #E6F7E9;
+        }
+
+        @media (max-width: 640px) {
+            body > section[id] { padding-top: 3rem; padding-bottom: 3rem; border-radius: 28px; }
+        }
+
+        [class*="shadow-["] { box-shadow: 0 8px 24px -12px rgba(21, 19, 28, .3) !important; }
+
+        input, select {
+            background: #fff !important;
+            border-radius: 14px !important;
+            border-color: var(--linea) !important;
+            padding: .7rem .9rem !important;
+        }
+        input:focus, select:focus { outline: 2px solid var(--foco); outline-offset: 1px; }
+        input[type="checkbox"] { padding: 0 !important; border-radius: 6px !important; }
+
+        .border-3 { border: 1px solid var(--linea); border-radius: 22px; overflow-x: auto; }
+        thead tr { background: var(--tinta) !important; }
+        tbody tr:hover { background: #F4F4F8; }
+
+        li.border-2 { border-radius: 18px !important; }
+        .w-full.bg-slate-200 { border-radius: 999px; border: 0 !important; background: #E6E6EE !important; }
+        .w-full.bg-slate-200 > div { border-radius: 999px; }
+
+        [id^="modal-"] { backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+        [id^="modal-"] .brutal-card:hover { transform: none; }
+
+        a:focus-visible, button:focus-visible { outline: 3px solid var(--foco); outline-offset: 2px; }
+        @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+    
+        /* ===== Más aire entre zonas ===== */
+        body > section[id] { margin: 0 auto; }
+        #metodologia { margin-bottom: 6rem; }
+
+        /* ===== Fondo animado de toda la página ===== */
+        body::before {
+            content: ""; position: fixed; inset: -25%; z-index: -1; pointer-events: none;
+            background:
+                radial-gradient(circle at 22% 28%, rgba(166, 130, 255, .55), transparent 30%),
+                radial-gradient(circle at 78% 22%, rgba(255, 107, 107, .38), transparent 28%),
+                radial-gradient(circle at 70% 78%, rgba(255, 230, 0, .45), transparent 30%),
+                radial-gradient(circle at 26% 74%, rgba(77, 150, 255, .4), transparent 30%);
+            animation: deriva 26s ease-in-out infinite alternate;
+        }
+        body::after {
+            content: ""; position: fixed; inset: -60px; z-index: -1; pointer-events: none;
+            background: radial-gradient(rgba(21, 19, 28, .16) 1.5px, transparent 2px) 0 0 / 28px 28px;
+            animation: puntos 16s linear infinite;
+        }
+        @keyframes deriva {
+            from { transform: translate3d(-3%, -2%, 0) rotate(0deg) scale(1); }
+            to   { transform: translate3d(4%, 3%, 0) rotate(14deg) scale(1.15); }
+        }
+        @keyframes puntos { to { transform: translate(28px, 28px); } }
+
+        /* ===== Divisores: río de una sola línea ===== */
+        .divisor { position: relative; width: 100%; overflow: hidden; margin: 4rem 0; }
+        .divisor-rio { height: 7.5rem; }
+        .divisor-rio svg { display: block; }
+        .rio-texto {
+            font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+            font-weight: 300; font-size: 18px; letter-spacing: .03em;
+            fill: var(--tinta);
+            paint-order: stroke; stroke: #fff; stroke-width: 3px; stroke-linejoin: round;
+        }
+        .rio-onda { animation: rio-fluir 5s linear infinite; }
+        .rio-onda-0 { --o: -28px; }
+        .rio-onda-1 { --o: -80px; animation-duration: 8s; }
+        @keyframes rio-fluir { to { stroke-dashoffset: var(--o); } }
+
+        @media (max-width: 640px) {
+            .divisor { margin: 2rem 0; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            body::before, body::after, .rio-onda { animation: none !important; }
         }
     </style>
 </head>
-<body class="bg-[#FFFDF7] text-black min-h-screen flex flex-col selection:bg-[#FFE600]">
+<body class="text-black min-h-screen flex flex-col selection:bg-[#FFE600]">
 
     <!-- Navbar -->
     <header class="border-b-4 border-black bg-[#FFE600] sticky top-0 z-40 px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-2">
                 <div class="bg-black text-white p-2 font-bold text-xl">LCM</div>
-                <span class="font-bold text-lg tracking-wider">VISUALS</span>
+                <span class="font-bold text-lg tracking-wider">Visuals</span>
             </div>
             <nav class="hidden md:flex gap-8 font-bold text-sm uppercase">
-                <a href="#crm-seccion" class="hover:underline text-blue-900 font-black">// CRM Leads</a>
-                <a href="#cursos" class="hover:underline">// Cursos</a>
-                <a href="#lecciones" class="hover:underline">// Mis Cursos</a>
-                <a href="#software" class="hover:underline">// Software</a>
-                <a href="#metodologia" class="hover:underline">// Método</a>
+                <a href="#crm-seccion" class="hover:underline text-blue-900 font-black">CRM Leads</a>
+                <a href="#cursos" class="hover:underline">Cursos</a>
+                <a href="#lecciones" class="hover:underline">Mis Cursos</a>
+                <a href="#software" class="hover:underline">Software</a>
+                <a href="#metodologia" class="hover:underline">Método</a>
             </nav>
             <div class="flex gap-3 items-center">
                 <button type="button" id="btn-panel-admin" style="display: none;" onclick="abrirModal('modal-admin'); prepararCreacionCurso();" class="brutal-btn bg-[#6BCB77] text-black px-4 py-2 text-xs font-bold uppercase flex items-center gap-1">
                     <i class="ph-bold ph-gear"></i> Panel Admin
                 </button>
-                
-                <button type="button" onclick="abrirModal('modal-info')" class="brutal-btn bg-[#4D96FF] text-white px-4 py-2 text-xs font-bold uppercase">Más Información</button>
-                
+
+                <button type="button" onclick="abrirModal('modal-info')" class="brutal-btn bg-[#4D96FF] text-white px-4 py-2 text-xs font-bold uppercase">Más información</button>
+
                 <div id="auth-guest-buttons" class="flex gap-3">
                     <button type="button" onclick="abrirModal('modal-login')" class="brutal-btn bg-white px-4 py-2 text-xs font-bold uppercase">Entrar</button>
                     <button type="button" onclick="abrirModal('modal-register')" class="brutal-btn bg-[#FF6B6B] text-white px-4 py-2 text-xs font-bold uppercase">Registro</button>
@@ -70,7 +258,7 @@
                 <div id="auth-user-buttons" style="display: none;" class="flex items-center gap-3">
                     <span id="user-display-name" class="text-xs font-bold uppercase bg-black text-white px-3 py-2 border-2 border-black"></span>
                     <button type="button" onclick="cerrarSesion()" class="brutal-btn bg-[#FF6B6B] text-white px-4 py-2 text-xs font-bold uppercase flex items-center gap-1">
-                        <i class="ph-bold ph-sign-out"></i> Cerrar Sesión
+                        <i class="ph-bold ph-sign-out"></i> Cerrar sesión
                     </button>
                 </div>
             </div>
@@ -78,7 +266,7 @@
     </header>
 
     <!-- Hero -->
-    <section class="py-20 px-6 text-center max-w-4xl mx-auto">
+    <section id="inicio" class="py-20 px-6 text-center max-w-4xl mx-auto">
         <span class="bg-[#4D96FF] text-white font-bold text-xs uppercase px-3 py-1 border-2 border-black inline-block mb-6 shadow-[3px_3px_0px_0px_#000]">Masterclass 2026</span>
         <h1 class="text-4xl md:text-6xl font-bold uppercase leading-tight mb-6">
             Domina el software de <span class="bg-[#FFE600] px-2 border-2 border-black">diseño gráfico</span>
@@ -87,30 +275,32 @@
             Aprende Photoshop, Illustrator, Figma y Premiere Pro mediante proyectos reales.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <a href="#cursos" class="brutal-btn bg-[#6BCB77] text-black font-bold text-base px-8 py-4 inline-block uppercase">Ver Catálogo de Cursos</a>
-            <button type="button" onclick="abrirModal('modal-info')" class="brutal-btn bg-[#4D96FF] text-white font-bold text-base px-8 py-4 inline-block uppercase">Quiero más información _</button>
+            <a href="#cursos" class="brutal-btn bg-[#15131C] text-white font-bold text-base px-8 py-4 inline-block uppercase">Ver catálogo de cursos</a>
+            <button type="button" onclick="abrirModal('modal-info')" class="brutal-btn bg-[#4D96FF] text-white font-bold text-base px-8 py-4 inline-block uppercase">Quiero más información</button>
         </div>
     </section>
+
+    <div class="divisor divisor-rio" aria-hidden="true"></div>
 
     <!-- 1. MÓDULO CRM DE LEADS -->
     <section id="crm-seccion" class="py-16 px-6 max-w-7xl mx-auto w-full border-t-4 border-black bg-white">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
             <div>
                 <span class="bg-[#4D96FF] text-white font-bold text-xs uppercase px-3 py-1 border-2 border-black inline-block mb-2 shadow-[2px_2px_0px_0px_#000]">Módulo CRM</span>
-                <h2 class="text-3xl font-bold uppercase">Gestión de Contactos y Leads</h2>
+                <h2 class="text-3xl font-bold uppercase">Gestión de contactos y leads</h2>
             </div>
             <button type="button" onclick="abrirModal('modal-nuevo-lead')" class="brutal-btn bg-[#6BCB77] px-4 py-2 text-xs font-bold uppercase flex items-center gap-1">
-                <i class="ph-bold ph-user-plus text-base"></i> Nuevo Contacto
+                <i class="ph-bold ph-user-plus text-base"></i> Nuevo contacto
             </button>
         </div>
 
         <div class="brutal-card bg-[#FFFDF7] p-4 mb-6 grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
                 <label class="block text-[10px] font-bold uppercase mb-1">Buscar por nombre o correo</label>
-                <input type="text" id="crm-search" oninput="filtrarCRM()" placeholder="EJ: Carlos..." class="w-full border-2 border-black p-2 text-xs bg-white focus:outline-none">
+                <input type="text" id="crm-search" oninput="filtrarCRM()" placeholder="Ej: Carlos..." class="w-full border-2 border-black p-2 text-xs bg-white focus:outline-none">
             </div>
             <div>
-                <label class="block text-[10px] font-bold uppercase mb-1">Filtrar por Etapa</label>
+                <label class="block text-[10px] font-bold uppercase mb-1">Filtrar por etapa</label>
                 <select id="crm-filtro-etapa" onchange="filtrarCRM()" class="w-full border-2 border-black p-2 text-xs font-bold bg-white focus:outline-none">
                     <option value="">Todas las etapas</option>
                     <option value="Lead">Lead</option>
@@ -120,7 +310,7 @@
                 </select>
             </div>
             <div>
-                <label class="block text-[10px] font-bold uppercase mb-1">Filtrar por Curso de Interés</label>
+                <label class="block text-[10px] font-bold uppercase mb-1">Filtrar por curso de interés</label>
                 <select id="crm-filtro-curso" onchange="filtrarCRM()" class="w-full border-2 border-black p-2 text-xs font-bold bg-white focus:outline-none">
                     <option value="">Todos los cursos</option>
                     <option value="Adobe Photoshop">Adobe Photoshop</option>
@@ -129,7 +319,7 @@
                 </select>
             </div>
             <div>
-                <label class="block text-[10px] font-bold uppercase mb-1">Filtrar por Origen</label>
+                <label class="block text-[10px] font-bold uppercase mb-1">Filtrar por origen</label>
                 <select id="crm-filtro-origen" onchange="filtrarCRM()" class="w-full border-2 border-black p-2 text-xs font-bold bg-white focus:outline-none">
                     <option value="">Todos los orígenes</option>
                     <option value="Formulario Web">Formulario Web</option>
@@ -147,7 +337,7 @@
                         <th class="p-3 border-r-2 border-white">Nombre</th>
                         <th class="p-3 border-r-2 border-white">Correo</th>
                         <th class="p-3 border-r-2 border-white">Teléfono</th>
-                        <th class="p-3 border-r-2 border-white">Curso de Interés</th>
+                        <th class="p-3 border-r-2 border-white">Curso de interés</th>
                         <th class="p-3 border-r-2 border-white">Origen</th>
                         <th class="p-3 border-r-2 border-white">Etapa</th>
                         <th class="p-3 text-center">Acciones</th>
@@ -158,9 +348,11 @@
         </div>
     </section>
 
+    <div class="divisor divisor-rio" aria-hidden="true"></div>
+
     <!-- 2. PROGRAMAS DESTACADOS -->
     <section id="cursos" class="py-16 px-6 max-w-7xl mx-auto w-full border-t-4 border-black">
-        <h2 class="text-3xl font-bold uppercase mb-8">Programas Destacados</h2>
+        <h2 class="text-3xl font-bold uppercase mb-8">Programas destacados</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="brutal-card bg-[#FFD93D] p-6 flex flex-col justify-between">
                 <div>
@@ -171,7 +363,7 @@
                 <div class="flex justify-between items-center mt-4 pt-3 border-t-2 border-black">
                     <span class="bg-black text-white text-[10px] px-2 py-1 uppercase font-bold">$50.000 COP</span>
                     <div id="btn-curso-1">
-                        <button type="button" onclick="abrirPasarelaPago('Adobe Photoshop', 50000)" class="brutal-btn bg-white text-black px-3 py-1.5 text-xs font-bold uppercase">Inscribirme _</button>
+                        <button type="button" onclick="abrirPasarelaPago('Adobe Photoshop', 50000)" class="brutal-btn bg-white text-black px-3 py-1.5 text-xs font-bold uppercase">Inscribirme</button>
                     </div>
                 </div>
             </div>
@@ -184,7 +376,7 @@
                 <div class="flex justify-between items-center mt-4 pt-3 border-t-2 border-black">
                     <span class="bg-white text-black text-[10px] px-2 py-1 uppercase font-bold">$50.000 COP</span>
                     <div id="btn-curso-2">
-                        <button type="button" onclick="abrirPasarelaPago('Adobe Illustrator', 50000)" class="brutal-btn bg-white text-black px-3 py-1.5 text-xs font-bold uppercase">Inscribirme _</button>
+                        <button type="button" onclick="abrirPasarelaPago('Adobe Illustrator', 50000)" class="brutal-btn bg-white text-black px-3 py-1.5 text-xs font-bold uppercase">Inscribirme</button>
                     </div>
                 </div>
             </div>
@@ -197,31 +389,35 @@
                 <div class="flex justify-between items-center mt-4 pt-3 border-t-2 border-black">
                     <span class="bg-white text-black text-[10px] px-2 py-1 uppercase font-bold">$50.000 COP</span>
                     <div id="btn-curso-3">
-                        <button type="button" onclick="abrirPasarelaPago('Figma UI/UX', 50000)" class="brutal-btn bg-white text-black px-3 py-1.5 text-xs font-bold uppercase">Inscribirme _</button>
+                        <button type="button" onclick="abrirPasarelaPago('Figma UI/UX', 50000)" class="brutal-btn bg-white text-black px-3 py-1.5 text-xs font-bold uppercase">Inscribirme</button>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <div class="divisor divisor-rio" aria-hidden="true"></div>
+
     <!-- 3. MIS CURSOS Y PROGRESO (AULA VIRTUAL) -->
     <section id="lecciones" class="py-16 px-6 max-w-7xl mx-auto w-full border-t-4 border-black">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
             <div>
-                <span class="bg-[#FF6B6B] text-white font-bold text-xs uppercase px-3 py-1 border-2 border-black inline-block mb-2 shadow-[2px_2px_0px_0px_#000]">Área de Alumno</span>
-                <h2 class="text-3xl font-bold uppercase">Mis Cursos y Progreso</h2>
+                <span class="bg-[#FF6B6B] text-white font-bold text-xs uppercase px-3 py-1 border-2 border-black inline-block mb-2 shadow-[2px_2px_0px_0px_#000]">Área de alumno</span>
+                <h2 class="text-3xl font-bold uppercase">Mis cursos y progreso</h2>
             </div>
             <button type="button" id="btn-crear-curso" style="display: none;" onclick="abrirModal('modal-admin'); prepararCreacionCurso();" class="brutal-btn bg-[#FFD93D] px-4 py-2 text-xs font-bold uppercase flex items-center gap-1">
-                <i class="ph-bold ph-plus-circle text-base"></i> Crear Nuevo Curso
+                <i class="ph-bold ph-plus-circle text-base"></i> Crear nuevo curso
             </button>
         </div>
         <div id="cursos-container" class="grid grid-cols-1 lg:grid-cols-3 gap-6"></div>
     </section>
 
-    <!-- 4. ECOSISTEMA DE SOFTWARE (RESTAURADO) -->
+    <div class="divisor divisor-rio" aria-hidden="true"></div>
+
+    <!-- 4. ECOSISTEMA DE SOFTWARE -->
     <section id="software" class="py-16 px-6 bg-[#FFE600] border-t-4 border-black">
         <div class="max-w-7xl mx-auto text-center">
-            <h2 class="text-3xl font-bold uppercase mb-4">Ecosistema de Software</h2>
+            <h2 class="text-3xl font-bold uppercase mb-4">Ecosistema de software</h2>
             <p class="text-xs font-bold uppercase mb-8 text-slate-800">Haz clic en cualquier panel para ver su funcionamiento:</p>
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
                 <div data-software="Photoshop" class="software-card brutal-card bg-white p-4 font-bold text-center cursor-pointer hover:bg-[#FFFDF7] transition">Photoshop</div>
@@ -234,12 +430,14 @@
         </div>
     </section>
 
-    <!-- 5. METODOLOGÍA DE ESTUDIO (RESTAURADO) -->
+    <div class="divisor divisor-rio" aria-hidden="true"></div>
+
+    <!-- 5. METODOLOGÍA DE ESTUDIO -->
     <section id="metodologia" class="py-16 px-6 max-w-7xl mx-auto w-full border-t-4 border-black">
-        <h2 class="text-3xl font-bold uppercase mb-8 text-center">Metodología de Estudio</h2>
+        <h2 class="text-3xl font-bold uppercase mb-8 text-center">Metodología de estudio</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="brutal-card bg-white p-6">
-                <h3 class="font-bold text-lg mb-2">1. Proyectos Reales</h3>
+                <h3 class="font-bold text-lg mb-2">1. Proyectos reales</h3>
                 <p class="text-xs">Ejercicios prácticos con entregables de nivel profesional.</p>
             </div>
             <div class="brutal-card bg-white p-6">
@@ -257,12 +455,12 @@
     <div id="modal-nuevo-lead" style="display: none;" class="fixed inset-0 bg-black/70 z-50 items-center justify-center p-4">
         <div class="brutal-card bg-white p-6 w-full max-w-md text-black relative">
             <div class="flex justify-between items-center mb-4 pb-2 border-b-2 border-black">
-                <h3 class="font-bold text-base uppercase">Agregar Nuevo Contacto al CRM</h3>
+                <h3 class="font-bold text-base uppercase">Agregar nuevo contacto al CRM</h3>
                 <button type="button" onclick="cerrarModal('modal-nuevo-lead')" class="font-bold text-lg">✕</button>
             </div>
             <form onsubmit="guardarNuevoLead(event)" class="space-y-3">
-                <input type="text" id="lead-nombre" required placeholder="Nombre Completo" class="border-2 border-black p-2 w-full text-xs font-medium bg-white">
-                <input type="email" id="lead-email" required placeholder="Correo Electrónico" class="border-2 border-black p-2 w-full text-xs font-medium bg-white">
+                <input type="text" id="lead-nombre" required placeholder="Nombre completo" class="border-2 border-black p-2 w-full text-xs font-medium bg-white">
+                <input type="email" id="lead-email" required placeholder="Correo electrónico" class="border-2 border-black p-2 w-full text-xs font-medium bg-white">
                 <input type="tel" id="lead-tel" required placeholder="Teléfono" class="border-2 border-black p-2 w-full text-xs font-medium bg-white">
                 <select id="lead-curso" required class="border-2 border-black p-2 w-full text-xs font-bold bg-white">
                     <option value="Adobe Photoshop">Adobe Photoshop</option>
@@ -281,7 +479,7 @@
                     <option value="Inscrito">Inscrito</option>
                     <option value="VIP">VIP</option>
                 </select>
-                <button type="submit" class="brutal-btn bg-[#6BCB77] text-black w-full py-2.5 font-bold uppercase text-xs mt-3">Guardar Contacto _</button>
+                <button type="submit" class="brutal-btn bg-[#6BCB77] text-black w-full py-2.5 font-bold uppercase text-xs mt-3">Guardar contacto</button>
             </form>
         </div>
     </div>
@@ -289,7 +487,7 @@
     <div id="modal-pasarela" style="display: none;" class="fixed inset-0 bg-black/70 z-50 items-center justify-center p-4">
         <div class="brutal-card bg-white p-6 w-full max-w-md text-black relative">
             <div class="flex justify-between items-center mb-4 pb-2 border-b-2 border-black">
-                <h3 class="font-bold text-base uppercase">// Pasarela de Pago Segura</h3>
+                <h3 class="font-bold text-base uppercase">Pasarela de pago segura</h3>
                 <button type="button" onclick="cerrarModal('modal-pasarela')" class="font-bold text-lg">✕</button>
             </div>
             <div class="bg-[#FFFDF7] border-2 border-black p-4 mb-4">
@@ -301,13 +499,13 @@
             </div>
             <form onsubmit="procesarPagoInterno(event)" class="space-y-3">
                 <input type="hidden" id="pago-curso-nombre-hidden">
-                <input type="text" required placeholder="Nombre en la Tarjeta" class="border-2 border-black p-2 w-full text-xs font-medium bg-white">
-                <input type="text" required placeholder="Número de Tarjeta" maxlength="19" class="border-2 border-black p-2 w-full text-xs font-medium bg-white">
+                <input type="text" required placeholder="Nombre en la tarjeta" class="border-2 border-black p-2 w-full text-xs font-medium bg-white">
+                <input type="text" required placeholder="Número de tarjeta" maxlength="19" class="border-2 border-black p-2 w-full text-xs font-medium bg-white">
                 <div class="grid grid-cols-2 gap-2">
                     <input type="text" required placeholder="MM/AA" maxlength="5" class="border-2 border-black p-2 w-full text-xs font-medium bg-white">
                     <input type="password" required placeholder="CVV" maxlength="4" class="border-2 border-black p-2 w-full text-xs font-medium bg-white">
                 </div>
-                <button type="submit" class="brutal-btn bg-[#6BCB77] text-black w-full py-3 font-bold uppercase text-xs mt-4">Confirmar Pago _</button>
+                <button type="submit" class="brutal-btn bg-[#6BCB77] text-black w-full py-3 font-bold uppercase text-xs mt-4">Confirmar pago</button>
             </form>
         </div>
     </div>
@@ -315,12 +513,12 @@
     <div id="modal-software" style="display: none;" class="fixed inset-0 bg-black/60 z-50 items-center justify-center p-4">
         <div class="brutal-card bg-white p-6 w-full max-w-lg text-black relative">
             <div class="flex justify-between items-center mb-4 pb-2 border-b-2 border-black">
-                <h3 id="software-modal-title" class="font-bold text-xl uppercase tracking-wider">// SOFTWARE</h3>
+                <h3 id="software-modal-title" class="font-bold text-xl uppercase tracking-wider">SOFTWARE</h3>
                 <button type="button" onclick="cerrarModal('modal-software')" class="brutal-btn bg-white px-2 py-1 font-bold text-sm">✕</button>
             </div>
             <p id="software-modal-desc" class="text-sm font-medium mb-6 leading-relaxed bg-[#FFFDF7] p-4 border-2 border-black"></p>
             <div class="flex justify-end">
-                <button type="button" onclick="cerrarModal('modal-software')" class="brutal-btn bg-[#6BCB77] px-6 py-2.5 font-bold uppercase text-xs">Entendido _</button>
+                <button type="button" onclick="cerrarModal('modal-software')" class="brutal-btn bg-[#6BCB77] px-6 py-2.5 font-bold uppercase text-xs">Entendido</button>
             </div>
         </div>
     </div>
@@ -334,8 +532,8 @@
             <form id="form-curso" onsubmit="guardarCurso(event)" class="space-y-4">
                 <input type="hidden" id="curso-id">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <input type="text" id="curso-titulo" required placeholder="Título del Curso" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white">
-                    <input type="text" id="curso-badge" required placeholder="Badge (EJ: PS)" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white">
+                    <input type="text" id="curso-titulo" required placeholder="Título del curso" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white">
+                    <input type="text" id="curso-badge" required placeholder="Badge (Ej: PS)" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white">
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <select id="curso-color" required class="w-full border-2 border-black p-2.5 text-sm font-bold bg-white">
@@ -344,19 +542,19 @@
                         <option value="#4D96FF">Azul</option>
                         <option value="#6BCB77">Verde</option>
                     </select>
-                    <input type="text" id="curso-duracion" required placeholder="Duración (EJ: 24 Horas)" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white">
+                    <input type="text" id="curso-duracion" required placeholder="Duración (Ej: 24 Horas)" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white">
                 </div>
                 <input type="text" id="curso-inscritos" placeholder="Alumnos inscritos (separados por coma)" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white">
                 <div class="border-t-2 border-black pt-4 mt-4">
                     <div class="flex justify-between items-center mb-3">
-                        <label class="text-xs font-bold uppercase">Lecciones y Recursos</label>
-                        <button type="button" onclick="agregarCampoLeccion()" class="brutal-btn bg-[#FFE600] px-3 py-1 text-[11px] font-bold uppercase">+ Agregar Lección</button>
+                        <label class="text-xs font-bold uppercase">Lecciones y recursos</label>
+                        <button type="button" onclick="agregarCampoLeccion()" class="brutal-btn bg-[#FFE600] px-3 py-1 text-[11px] font-bold uppercase">+ Agregar lección</button>
                     </div>
                     <div id="lecciones-wrapper" class="space-y-3 max-h-60 overflow-y-auto p-2 border-2 border-black bg-white"></div>
                 </div>
                 <div class="flex justify-end gap-3 pt-4 border-t-2 border-black mt-6">
                     <button type="button" onclick="cerrarModal('modal-admin')" class="brutal-btn bg-white font-bold text-xs uppercase px-4 py-2.5">Cancelar</button>
-                    <button type="submit" class="brutal-btn bg-[#6BCB77] text-black font-bold text-xs uppercase px-6 py-2.5">Guardar Curso _</button>
+                    <button type="submit" class="brutal-btn bg-[#6BCB77] text-black font-bold text-xs uppercase px-6 py-2.5">Guardar curso</button>
                 </div>
             </form>
         </div>
@@ -365,13 +563,13 @@
     <div id="modal-info" style="display: none;" class="fixed inset-0 bg-black/60 z-50 items-center justify-center p-4">
         <div class="brutal-card bg-[#FFE600] p-6 w-full max-w-lg text-black relative">
             <div class="flex justify-between items-center mb-6 pb-3 border-b-4 border-black">
-                <h3 class="font-bold text-xl uppercase tracking-wider">// MÁS INFORMACIÓN</h3>
+                <h3 class="font-bold text-xl uppercase tracking-wider">Más información</h3>
                 <button type="button" onclick="cerrarModal('modal-info')" class="brutal-btn bg-white px-2 py-1 font-bold text-sm">✕</button>
             </div>
             <form onsubmit="procesarFormularioInfo(event)" class="space-y-4">
-                <input type="text" id="info-nombre" required placeholder="Nombre Completo" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white">
+                <input type="text" id="info-nombre" required placeholder="Nombre completo" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <input type="email" id="info-email" required placeholder="Correo Electrónico" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white">
+                    <input type="email" id="info-email" required placeholder="Correo electrónico" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white">
                     <input type="tel" id="info-tel" required placeholder="Teléfono" class="w-full border-2 border-black p-2.5 text-sm font-medium bg-white">
                 </div>
                 <select id="info-curso" required class="w-full border-2 border-black p-2.5 text-sm font-bold bg-white">
@@ -381,7 +579,7 @@
                 </select>
                 <div class="flex justify-end gap-3 pt-3 border-t-2 border-black">
                     <button type="button" onclick="cerrarModal('modal-info')" class="brutal-btn bg-white text-black font-bold text-xs uppercase px-4 py-2.5">Cancelar</button>
-                    <button type="submit" class="brutal-btn bg-[#6BCB77] text-black font-bold text-xs uppercase px-6 py-2.5">Enviar _</button>
+                    <button type="submit" class="brutal-btn bg-[#6BCB77] text-black font-bold text-xs uppercase px-6 py-2.5">Enviar</button>
                 </div>
             </form>
         </div>
@@ -390,16 +588,16 @@
     <div id="modal-login" style="display: none;" class="fixed inset-0 bg-black/60 z-50 items-center justify-center p-4">
         <div class="brutal-card bg-white p-6 w-full max-w-md">
             <div class="flex justify-between items-center mb-4 pb-2 border-b-2 border-black">
-                <h3 class="font-bold text-lg uppercase">Iniciar Sesión</h3>
+                <h3 class="font-bold text-lg uppercase">Iniciar sesión</h3>
                 <button type="button" onclick="cerrarModal('modal-login')" class="font-bold text-lg">✕</button>
             </div>
             <form onsubmit="procesarLogin(event)">
                 <input type="email" id="login-email" required placeholder="Correo" class="border-2 border-black p-2 w-full mb-3 text-sm font-medium bg-white">
                 <input type="password" id="login-password" required placeholder="Contraseña" class="border-2 border-black p-2 w-full mb-4 text-sm font-medium bg-white">
-                <button type="submit" class="brutal-btn bg-[#6BCB77] text-black w-full py-2.5 font-bold uppercase text-xs mb-3">Entrar _</button>
+                <button type="submit" class="brutal-btn bg-[#6BCB77] text-black w-full py-2.5 font-bold uppercase text-xs mb-3">Entrar</button>
             </form>
             <div class="pt-3 border-t-2 border-black bg-[#FFFDF7] p-3 border-2 border-black">
-                <span class="text-[10px] font-bold uppercase block mb-2 text-center text-slate-700">// Credenciales de Prueba</span>
+                <span class="text-[10px] font-bold uppercase block mb-2 text-center text-slate-700">Credenciales de prueba</span>
                 <div class="grid grid-cols-2 gap-2">
                     <button type="button" onclick="llenarCredenciales('comprador')" class="brutal-btn bg-[#FFD93D] text-black text-[10px] font-bold py-1.5 px-2 uppercase">👤 Comprador</button>
                     <button type="button" onclick="llenarCredenciales('vendedor')" class="brutal-btn bg-[#6BCB77] text-black text-[10px] font-bold py-1.5 px-2 uppercase">🏷️ Admin</button>
@@ -411,14 +609,14 @@
     <div id="modal-register" style="display: none;" class="fixed inset-0 bg-black/60 z-50 items-center justify-center p-4">
         <div class="brutal-card bg-white p-6 w-full max-w-md">
             <div class="flex justify-between items-center mb-4 pb-2 border-b-2 border-black">
-                <h3 class="font-bold text-lg uppercase">Crear Cuenta</h3>
+                <h3 class="font-bold text-lg uppercase">Crear cuenta</h3>
                 <button type="button" onclick="cerrarModal('modal-register')" class="font-bold text-lg">✕</button>
             </div>
             <form onsubmit="procesarRegistro(event)">
                 <input type="text" id="reg-name" required placeholder="Nombre completo" class="border-2 border-black p-2 w-full mb-3 text-sm font-medium bg-white">
                 <input type="email" id="reg-email" required placeholder="Correo" class="border-2 border-black p-2 w-full mb-3 text-sm font-medium bg-white">
                 <input type="password" id="reg-password" required placeholder="Contraseña" class="border-2 border-black p-2 w-full mb-4 text-sm font-medium bg-white">
-                <button type="submit" class="brutal-btn bg-[#FF6B6B] text-white w-full py-2.5 font-bold uppercase text-xs">Registrarse _</button>
+                <button type="submit" class="brutal-btn bg-[#FF6B6B] text-white w-full py-2.5 font-bold uppercase text-xs">Registrarse</button>
             </form>
         </div>
     </div>
@@ -826,7 +1024,7 @@
                 if (estaInscrito) {
                     contenedor.innerHTML = `<a href="#lecciones" class="brutal-btn bg-[#6BCB77] text-black px-3 py-1.5 text-xs font-bold uppercase inline-flex items-center gap-1">✓ Inscrito</a>`;
                 } else {
-                    contenedor.innerHTML = `<button type="button" onclick="abrirPasarelaPago('${item.nombre}', 50000)" class="brutal-btn bg-white text-black px-3 py-1.5 text-xs font-bold uppercase">Inscribirme _</button>`;
+                    contenedor.innerHTML = `<button type="button" onclick="abrirPasarelaPago('${item.nombre}', 50000)" class="brutal-btn bg-white text-black px-3 py-1.5 text-xs font-bold uppercase">Inscribirme</button>`;
                 }
             });
         }
@@ -841,7 +1039,7 @@
                     <div class="col-span-3 brutal-card bg-white p-8 text-center">
                         <h3 class="font-bold text-lg uppercase mb-2">Inicia sesión para ver tus cursos</h3>
                         <p class="text-xs text-slate-600 mb-4">Debes ingresar con tu cuenta para acceder a las lecciones asignadas.</p>
-                        <button type="button" onclick="abrirModal('modal-login')" class="brutal-btn bg-[#6BCB77] text-black px-4 py-2 text-xs font-bold uppercase">Iniciar Sesión</button>
+                        <button type="button" onclick="abrirModal('modal-login')" class="brutal-btn bg-[#6BCB77] text-black px-4 py-2 text-xs font-bold uppercase">Iniciar sesión</button>
                     </div>
                 `;
                 return;
@@ -861,7 +1059,7 @@
                     <div class="col-span-3 brutal-card bg-white p-8 text-center">
                         <h3 class="font-bold text-lg uppercase mb-2">No tienes cursos inscritos</h3>
                         <p class="text-xs text-slate-600 mb-4">Explora nuestros programas destacados arriba y haz clic en "Inscribirme".</p>
-                        <a href="#cursos" class="brutal-btn bg-[#FFE600] text-black px-4 py-2 text-xs font-bold uppercase inline-block">Ver Cursos</a>
+                        <a href="#cursos" class="brutal-btn bg-[#FFE600] text-black px-4 py-2 text-xs font-bold uppercase inline-block">Ver cursos</a>
                     </div>
                 `;
                 return;
@@ -888,7 +1086,7 @@
                                     </label>
                                 </div>
                                 <div class="flex flex-wrap gap-2">
-                                    ${l.video ? `<a href="${l.video}" target="_blank" class="brutal-btn bg-[#FF6B6B] text-white px-2.5 py-1 text-[10px] font-bold uppercase flex items-center gap-1"><i class="ph-bold ph-play-circle"></i> Ver Video</a>` : ''}
+                                    ${l.video ? `<a href="${l.video}" target="_blank" class="brutal-btn bg-[#FF6B6B] text-white px-2.5 py-1 text-[10px] font-bold uppercase flex items-center gap-1"><i class="ph-bold ph-play-circle"></i> Ver video</a>` : ''}
                                     ${l.material ? `<a href="${l.material}" target="_blank" class="brutal-btn bg-[#6BCB77] text-black px-2.5 py-1 text-[10px] font-bold uppercase flex items-center gap-1"><i class="ph-bold ph-download"></i> Material</a>` : ''}
                                 </div>
                             </li>
@@ -1033,6 +1231,93 @@
                 console.error("Error en la inicialización:", err);
             }
         });
+    </script>
+    <script>
+        // Ríos divisores: una línea fina que serpentea, con el texto flotando sobre ella
+        (function () {
+            var NS = 'http://www.w3.org/2000/svg';
+            var FRASE = 'LCM Visuals ✦ Diseña ✦ Aprende ✦ Crea ✦\u00A0';
+            var quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            var rios = [];
+            var animando = false;
+
+            function el(nombre, attrs) {
+                var e = document.createElementNS(NS, nombre);
+                for (var k in attrs) e.setAttribute(k, attrs[k]);
+                return e;
+            }
+
+            function camino(W, fase, dy) {
+                var d = '';
+                for (var x = -40; x <= W + 40; x += 8) {
+                    var y = 60 + dy + 20 * Math.sin(x / 140 + fase) + 9 * Math.sin(x / 53 + fase * 2);
+                    d += (d ? ' L' : 'M') + x + ' ' + y.toFixed(1);
+                }
+                return d;
+            }
+
+            function construir(caja, i) {
+                caja.innerHTML = '';
+                var W = caja.clientWidth || 800;
+                var fase = i * 1.3;
+                var svg = el('svg', { width: W, height: 120, viewBox: '0 0 ' + W + ' 120' });
+                caja.appendChild(svg);
+
+                var principal = el('path', { id: 'rio-' + i, d: camino(W, fase, 0), fill: 'none',
+                    stroke: '#15131C', 'stroke-width': 2.5, 'stroke-linecap': 'round' });
+                svg.appendChild(principal);
+
+                [[14, '3 11', 0.55], [26, '24 16', 0.4]].forEach(function (r, j) {
+                    svg.appendChild(el('path', { d: camino(W, fase, r[0]), fill: 'none', stroke: '#15131C',
+                        'stroke-width': 1.5, 'stroke-linecap': 'round', 'stroke-dasharray': r[1],
+                        opacity: r[2], 'class': 'rio-onda rio-onda-' + j }));
+                });
+
+                // Medir cuánto ocupa una repetición de la frase
+                var medida = el('text', { 'class': 'rio-texto' });
+                medida.textContent = FRASE;
+                svg.appendChild(medida);
+                var p = medida.getComputedTextLength() || 320;
+                svg.removeChild(medida);
+
+                var texto = el('text', { 'class': 'rio-texto', dy: -9 });
+                var tp = el('textPath', { href: '#rio-' + i });
+                var veces = Math.ceil((principal.getTotalLength() + p) / p) + 1;
+                tp.textContent = FRASE.repeat(veces);
+                tp.setAttribute('startOffset', -p);
+                texto.appendChild(tp);
+                svg.appendChild(texto);
+
+                return { tp: tp, p: p };
+            }
+
+            function mover(t) {
+                rios.forEach(function (r) {
+                    r.tp.setAttribute('startOffset', (-r.p + ((t * 0.03) % r.p)).toFixed(1));
+                });
+                requestAnimationFrame(mover);
+            }
+
+            function iniciar() {
+                rios = [];
+                document.querySelectorAll('.divisor-rio').forEach(function (caja, i) {
+                    rios.push(construir(caja, i));
+                });
+                if (quieto) {
+                    rios.forEach(function (r) { r.tp.setAttribute('startOffset', 0); });
+                } else if (!animando) {
+                    animando = true;
+                    requestAnimationFrame(mover);
+                }
+            }
+
+            var espera;
+            window.addEventListener('resize', function () {
+                clearTimeout(espera);
+                espera = setTimeout(iniciar, 200);
+            });
+            (document.fonts && document.fonts.load ? Promise.all([document.fonts.load('300 18px "Bricolage Grotesque"'), document.fonts.ready]) : Promise.resolve()).then(iniciar, iniciar);
+        })();
     </script>
 </body>
 </html>
